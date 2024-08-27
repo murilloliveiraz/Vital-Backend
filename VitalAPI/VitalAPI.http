@@ -1,0 +1,6 @@
+@VitalAPI_HostAddress = http://localhost:5051
+
+GET {{VitalAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
