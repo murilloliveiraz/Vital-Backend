@@ -1,6 +1,6 @@
 ﻿namespace Domain
 {
-    internal class Administrador
+    public class Administrador
     {
         public int Id { get; set; }
         public string Cargo { get; set; }
