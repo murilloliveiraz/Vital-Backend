@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infraestructure.ClassMappings
 {
-    internal class HospitalMap
+    public class HospitalMap : IEntityTypeConfiguration<Hospital>
     {
         public void Configure(EntityTypeBuilder<Hospital> builder)
         {

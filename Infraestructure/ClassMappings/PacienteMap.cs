@@ -16,7 +16,7 @@ namespace Infraestructure.ClassMappings
 
             builder.HasOne(m => m.Usuario)
                .WithOne()
-               .HasForeignKey<Medico>(m => m.UserId)
+               .HasForeignKey<Paciente>(m => m.UserId)
                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasMany(p => p.Exames)
