@@ -1,6 +1,6 @@
 namespace Application.DTOS.Hospital
 {
-    public interface HospitalRequestContract
+    public class HospitalRequestContract
     {
         public string Nome { get; set; }
         public string Endereco { get; set; }

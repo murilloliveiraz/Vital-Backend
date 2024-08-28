@@ -6,6 +6,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using AutoMapper;
+using Application.Mapper;
+using Application.Services.Classes;
+using Application.Services.Interfaces;
+using Infraestructure.Repositories.Interfaces;
+using Infraestructure.Repositories.Classes;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,7 +35,7 @@ ConfigurarAplicacao(app);
 app.Run();
 
 
-// Metodo que configrua as injeções de dependencia do projeto.
+// Metodo que configrua as injeï¿½ï¿½es de dependencia do projeto.
 static void ConfigurarInjecaoDeDependencia(WebApplicationBuilder builder)
 {
     string? connectionString = builder.Configuration.GetConnectionString("Localhost");
@@ -47,9 +53,22 @@ static void ConfigurarInjecaoDeDependencia(WebApplicationBuilder builder)
     builder.Services.AddIdentity<Usuario, IdentityRole>()
         .AddEntityFrameworkStores<ApplicationContext>()
         .AddDefaultTokenProviders();
+
+    var config = new MapperConfiguration(configs => {
+        configs.AddProfile<HospitalProfile>();
+    });
+
+    IMapper mapper = config.CreateMapper();
+
+    builder.Services
+    .AddSingleton(builder.Configuration)
+    .AddSingleton(builder.Environment)
+    .AddSingleton(mapper)
+    .AddScoped<IHospitalService, HospitalService>()
+    .AddScoped<IHospitalRepository, HospitalRepository>();
 }
 
-// Configura o serviços da API.
+// Configura o serviï¿½os da API.
 static void ConfigurarServices(WebApplicationBuilder builder)
 {
     builder.Services
@@ -87,7 +106,7 @@ static void ConfigurarServices(WebApplicationBuilder builder)
     });
 }
 
-// Configura os serviços na aplicação.
+// Configura os serviï¿½os na aplicaï¿½ï¿½o.
 static void ConfigurarAplicacao(WebApplication app)
 {
     // Configura o contexto do postgreSql para usar timestamp sem time zone.
@@ -104,8 +123,8 @@ static void ConfigurarAplicacao(WebApplication app)
 
     app.UseCors(x => x
         .AllowAnyOrigin() // Permite todas as origens
-        .AllowAnyMethod() // Permite todos os métodos
-        .AllowAnyHeader()) // Permite todos os cabeçalhos
+        .AllowAnyMethod() // Permite todos os mï¿½todos
+        .AllowAnyHeader()) // Permite todos os cabeï¿½alhos
         .UseAuthentication();
 
     app.UseAuthorization();

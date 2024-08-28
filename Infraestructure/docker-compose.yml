@@ -10,10 +10,9 @@ services:
       POSTGRES_PASSWORD: 123456
     restart: always
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - ./postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
-
 
   mongodb:
     image: mongo:latest
@@ -24,6 +23,6 @@ services:
       MONGO_INITDB_DATABASE: RegistrosDosProntuarios
     restart: always
     volumes:
-      - mongodb_data:/data/db
+      - ./mongodb_data:/data/db
     ports:
       - "27017:27017"

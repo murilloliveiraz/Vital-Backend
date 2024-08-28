@@ -96,10 +96,13 @@ namespace Infraestructure.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("DataInativacao")
-                        .IsRequired()
                         .HasColumnType("timestamp");
 
                     b.Property<string>("Endereco")
+                        .IsRequired()
+                        .HasColumnType("VARCHAR");
+
+                    b.Property<string>("Estado")
                         .IsRequired()
                         .HasColumnType("VARCHAR");
 

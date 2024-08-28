@@ -28,9 +28,8 @@ namespace Infraestructure.ClassMappings
             .IsRequired();
 
             builder.Property(h => h.DataInativacao)
-            .HasColumnType("timestamp")
-            .IsRequired();
-
+            .HasColumnType("timestamp");
+            
             builder.HasMany(h => h.Servicos)
                 .WithOne(hs => hs.Hospital)
                 .HasForeignKey(hs => hs.HospitalId);
