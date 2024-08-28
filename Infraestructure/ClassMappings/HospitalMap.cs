@@ -18,6 +18,10 @@ namespace Infraestructure.ClassMappings
             builder.Property(h => h.Endereco)
             .HasColumnType("VARCHAR")
             .IsRequired();
+            
+            builder.Property(h => h.Estado)
+            .HasColumnType("VARCHAR")
+            .IsRequired();
 
             builder.Property(h => h.Telefone)
             .HasColumnType("VARCHAR")
