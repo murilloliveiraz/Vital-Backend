@@ -89,11 +89,11 @@ namespace Infraestructure.Migrations
 
             modelBuilder.Entity("Domain.Hospital", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("HospitalId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("HospitalId"));
 
                     b.Property<DateTime?>("DataInativacao")
                         .HasColumnType("timestamp");
@@ -114,7 +114,7 @@ namespace Infraestructure.Migrations
                         .IsRequired()
                         .HasColumnType("VARCHAR");
 
-                    b.HasKey("Id");
+                    b.HasKey("HospitalId");
 
                     b.ToTable("hospitais", (string)null);
                 });
@@ -458,13 +458,13 @@ namespace Infraestructure.Migrations
                     b.HasOne("Domain.Hospital", "Hospital")
                         .WithMany("Servicos")
                         .HasForeignKey("HospitalId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Domain.Servico", "Servico")
                         .WithMany("Hospitais")
                         .HasForeignKey("ServicoId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Hospital");

@@ -57,6 +57,7 @@ static void ConfigurarInjecaoDeDependencia(WebApplicationBuilder builder)
     var config = new MapperConfiguration(configs => {
         configs.AddProfile<HospitalProfile>();
         configs.AddProfile<ServicoProfile>();
+        configs.AddProfile<HospitalServicoProfile>();
     });
 
     IMapper mapper = config.CreateMapper();
@@ -68,7 +69,9 @@ static void ConfigurarInjecaoDeDependencia(WebApplicationBuilder builder)
     .AddScoped<IHospitalService, HospitalService>()
     .AddScoped<IHospitalRepository, HospitalRepository>()
     .AddScoped<IServicoService, ServicoService>()
-    .AddScoped<IServicoRepository, ServicoRepository>();
+    .AddScoped<IServicoRepository, ServicoRepository>()
+    .AddScoped<IHospitalServicoService, HospitalServicoService>()
+    .AddScoped<IHospitalServicoRepository, HospitalServicoRepository>();
 }
 
 // Configura o servi�os da API.

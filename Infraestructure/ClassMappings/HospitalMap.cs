@@ -9,7 +9,7 @@ namespace Infraestructure.ClassMappings
         public void Configure(EntityTypeBuilder<Hospital> builder)
         {
             builder.ToTable("hospitais")
-           .HasKey(p => p.Id);
+           .HasKey(p => p.HospitalId);
 
             builder.Property(h => h.Nome)
             .HasColumnType("VARCHAR")

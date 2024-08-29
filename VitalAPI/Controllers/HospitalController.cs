@@ -42,7 +42,7 @@ namespace VitalAPI.Controllers
         public async Task<IActionResult> Post(HospitalRequestContract hospital)
         {
             var createdHospital = await _hospitalService.Create(hospital);
-            return CreatedAtAction(nameof(GetById), new { id = createdHospital.Id }, createdHospital);
+            return CreatedAtAction(nameof(GetById), new { id = createdHospital.HospitalId }, createdHospital);
         }
 
         [HttpDelete("{id}")]

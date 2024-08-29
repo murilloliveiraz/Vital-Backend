@@ -30,20 +30,20 @@ namespace Infraestructure.Repositories.Classes
         public async Task<IEnumerable<Hospital?>> Get()
         {
             return await _context.Hospitais.AsNoTracking()
-           .OrderBy(h => h.Id)
+           .OrderBy(h => h.HospitalId)
            .ToListAsync();
         }
 
         public async Task<IEnumerable<Hospital>?> GetAllByLocation(string estado)
         {
             return await _context.Hospitais.AsNoTracking().Where(h => h.Estado == estado)
-           .OrderBy(h => h.Id)
+           .OrderBy(h => h.HospitalId)
            .ToListAsync();
         }
 
         public async Task<Hospital?> GetById(int id)
         {
-            return await _context.Hospitais.AsNoTracking().FirstOrDefaultAsync(h => h.Id == id);
+            return await _context.Hospitais.AsNoTracking().FirstOrDefaultAsync(h => h.HospitalId == id);
         }
 
         public async Task<Hospital?> GetByName(string name)
@@ -53,7 +53,7 @@ namespace Infraestructure.Repositories.Classes
 
         public async Task<Hospital> Update(Hospital model)
         {
-            Hospital hospitalAtDatabase = await _context.Hospitais.FirstOrDefaultAsync(h => h.Id == model.Id);
+            Hospital hospitalAtDatabase = await _context.Hospitais.FirstOrDefaultAsync(h => h.HospitalId == model.HospitalId);
 
             _context.Entry(hospitalAtDatabase).CurrentValues.SetValues(model);
 

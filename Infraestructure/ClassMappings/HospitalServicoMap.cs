@@ -14,12 +14,12 @@ namespace Infraestructure.ClassMappings
             builder.HasOne(hs => hs.Servico)
                 .WithMany(s => s.Hospitais)
                 .HasForeignKey(hs => hs.ServicoId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(hs => hs.Hospital)
                 .WithMany(h => h.Servicos)
                 .HasForeignKey(hs => hs.HospitalId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
