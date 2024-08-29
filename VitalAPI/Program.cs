@@ -12,6 +12,7 @@ using Application.Services.Classes;
 using Application.Services.Interfaces;
 using Infraestructure.Repositories.Interfaces;
 using Infraestructure.Repositories.Classes;
+using Application.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -57,8 +58,11 @@ static void ConfigurarInjecaoDeDependencia(WebApplicationBuilder builder)
     var config = new MapperConfiguration(configs => {
         configs.AddProfile<HospitalProfile>();
         configs.AddProfile<ServicoProfile>();
+        configs.AddProfile<UsuarioProfile>();
         configs.AddProfile<HospitalServicoProfile>();
     });
+
+    builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 
     IMapper mapper = config.CreateMapper();
 
@@ -66,6 +70,9 @@ static void ConfigurarInjecaoDeDependencia(WebApplicationBuilder builder)
     .AddSingleton(builder.Configuration)
     .AddSingleton(builder.Environment)
     .AddSingleton(mapper)
+    .AddScoped<IEmailService, EmailService>()
+    .AddScoped<TokenJWTService>()
+    .AddScoped<UsuarioService>()
     .AddScoped<IHospitalService, HospitalService>()
     .AddScoped<IHospitalRepository, HospitalRepository>()
     .AddScoped<IServicoService, ServicoService>()
