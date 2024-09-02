@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Application.Services.Classes
 {
-    public class UsuarioService
+    public class UsuarioService : IUsuarioService
     {
         private readonly UserManager<Usuario> _userManager;
         private readonly ApplicationContext _context;
