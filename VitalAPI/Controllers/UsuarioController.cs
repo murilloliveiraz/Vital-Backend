@@ -1,6 +1,5 @@
 ﻿using Application.DTOS.Usuario;
-using Application.Services.Classes;
-using Microsoft.AspNetCore.Authorization;
+using Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace VitalAPI.Controllers
@@ -9,9 +8,9 @@ namespace VitalAPI.Controllers
     [ApiController]
     public class UsuarioController : ControllerBase
     {
-        private readonly UsuarioService _userService;
+        private readonly IUsuarioService _userService;
 
-        public UsuarioController(UsuarioService userService)
+        public UsuarioController(IUsuarioService userService)
         {
             _userService = userService;
         }

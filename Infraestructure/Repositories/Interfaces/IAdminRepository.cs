@@ -1,6 +1,8 @@
+using Domain;
+
 namespace Infraestructure.Repositories.Interfaces
 {
-    public interface IAdminRepository : IUsuarioRepository
+    public interface IAdminRepository : IRepository<Administrador, int>
     {
         
     }

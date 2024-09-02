@@ -28,28 +28,28 @@ namespace Infraestructure.Repositories.Classes
 
         public async Task<IEnumerable<Paciente?>> Get()
         {
-            return await _context.Pacientes.AsNoTracking().OrderBy(p => p.Id)
+            return await _context.Pacientes.AsNoTracking().OrderBy(p => p.Id).Include(p => p.Usuario)
            .ToListAsync();
         }
 
         public async Task<Paciente?> GetByCPF(string cpf)
         {
-            return await _context.Pacientes.AsNoTracking().FirstOrDefaultAsync(p => p.Usuario.CPF == cpf);
+            return await _context.Pacientes.AsNoTracking().Include(p => p.Usuario).FirstOrDefaultAsync(p => p.Usuario.CPF == cpf);
         }
 
         public async Task<Paciente?> GetByEmail(string email)
         {
-            return await _context.Pacientes.AsNoTracking().FirstOrDefaultAsync(p => p.Usuario.Email == email);
+            return await _context.Pacientes.AsNoTracking().Include(p => p.Usuario).FirstOrDefaultAsync(p => p.Usuario.Email == email);
         }
 
         public async Task<Paciente?> GetById(int id)
         {
-            return await _context.Pacientes.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
+            return await _context.Pacientes.AsNoTracking().Include(p => p.Usuario).FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<Paciente?> GetByName(string name)
         {
-            return await _context.Pacientes.AsNoTracking().FirstOrDefaultAsync(p => p.Usuario.Nome == name);
+            return await _context.Pacientes.AsNoTracking().Include(p => p.Usuario).FirstOrDefaultAsync(p => p.Usuario.Nome == name);
         }
 
         public async Task<Paciente> Update(Paciente model)

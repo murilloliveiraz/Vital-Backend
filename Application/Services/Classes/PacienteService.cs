@@ -1,4 +1,5 @@
 using Application.DTOS.Paciente;
+using Application.DTOS.Servicos;
 using Application.DTOS.Usuario;
 using Application.Services.Interfaces;
 using AutoMapper;
@@ -22,6 +23,7 @@ namespace Application.Services.Classes
 
         public async Task<PacienteResponseContract> Create(PacienteRequestContract model)
         {
+            model.DataNascimento = DateTime.SpecifyKind(model.DataNascimento, DateTimeKind.Unspecified);
             var user = _mapper.Map<UsuarioRequestContract>(model);
             var userCreated = await _usuarioService.Register(user);
             var paciente = _mapper.Map<Paciente>(model);
@@ -36,34 +38,42 @@ namespace Application.Services.Classes
             await _pacienteRepository.Delete(_mapper.Map<Paciente>(paciente));
         }
 
-        public Task<IEnumerable<PacienteResponseContract>> Get()
+        public async Task<IEnumerable<PacienteResponseContract>> Get()
         {
-            throw new NotImplementedException();
+            var pacientes = await _pacienteRepository.Get();
+            return pacientes.Select(p => _mapper.Map<PacienteResponseContract>(p));
         }
 
-        public Task<PacienteResponseContract?> GetByCPF(string cpf)
+        public async Task<PacienteResponseContract?> GetByCPF(string cpf)
         {
-            throw new NotImplementedException();
+            var paciente = await _pacienteRepository.GetByCPF(cpf);
+            return _mapper.Map<PacienteResponseContract>(paciente);
         }
 
-        public Task<PacienteResponseContract?> GetByEmail(string email)
+        public async Task<PacienteResponseContract?> GetByEmail(string email)
         {
-            throw new NotImplementedException();
+            var paciente = await _pacienteRepository.GetByEmail(email);
+            return _mapper.Map<PacienteResponseContract>(paciente);
         }
 
-        public Task<PacienteResponseContract> GetById(int id)
+        public async Task<PacienteResponseContract> GetById(int id)
         {
-            throw new NotImplementedException();
+            var paciente = await _pacienteRepository.GetById(id);
+            return _mapper.Map<PacienteResponseContract>(paciente);
         }
 
-        public Task<PacienteResponseContract?> GetByName(string name)
+        public async Task<PacienteResponseContract?> GetByName(string name)
         {
-            throw new NotImplementedException();
+            var paciente = await _pacienteRepository.GetByName(name);
+            return _mapper.Map<PacienteResponseContract>(paciente);
         }
 
-        public Task<PacienteResponseContract> Update(int id, PacienteRequestContract model)
+        public async Task<PacienteResponseContract> Update(int id, PacienteRequestContract model)
         {
-            throw new NotImplementedException();
+            var paciente = await _pacienteRepository.GetById(id);
+            _mapper.Map(model, paciente);
+            await _pacienteRepository.Update(paciente);
+            return _mapper.Map<PacienteResponseContract>(paciente);
         }
     }
 }
