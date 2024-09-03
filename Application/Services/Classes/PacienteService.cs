@@ -25,6 +25,7 @@ namespace Application.Services.Classes
         {
             model.DataNascimento = DateTime.SpecifyKind(model.DataNascimento, DateTimeKind.Unspecified);
             var user = _mapper.Map<UsuarioRequestContract>(model);
+            user.Role = "Paciente";
             var userCreated = await _usuarioService.Register(user);
             var paciente = _mapper.Map<Paciente>(model);
             paciente.UserId = userCreated.Id;
