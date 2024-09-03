@@ -41,7 +41,7 @@ namespace Infraestructure.Repositories.Classes
 
         public async Task<Medico?> GetByCRM(string crm)
         {
-            return await _context.Medicos.AsNoTracking().Include(m => m.Usuario).FirstOrDefaultAsync(m => m.Especialidade == crm);
+            return await _context.Medicos.AsNoTracking().Include(m => m.Usuario).FirstOrDefaultAsync(m => m.CRM == crm);
         }
 
         public async Task<Medico?> GetById(int id)
