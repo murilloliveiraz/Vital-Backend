@@ -60,6 +60,7 @@ static void ConfigurarInjecaoDeDependencia(WebApplicationBuilder builder)
         configs.AddProfile<ServicoProfile>();
         configs.AddProfile<UsuarioProfile>();
         configs.AddProfile<PacienteProfile>();
+        configs.AddProfile<MedicoProfile>();
         configs.AddProfile<HospitalServicoProfile>();
     });
 
@@ -81,7 +82,9 @@ static void ConfigurarInjecaoDeDependencia(WebApplicationBuilder builder)
     .AddScoped<IHospitalServicoService, HospitalServicoService>()
     .AddScoped<IHospitalServicoRepository, HospitalServicoRepository>()
     .AddScoped<IPacienteRepository, PacienteRepository>()
-    .AddScoped<IPacienteService, PacienteService>();
+    .AddScoped<IPacienteService, PacienteService>()
+    .AddScoped<IMedicoRepository, MedicoRepository>()
+    .AddScoped<IMedicoService, MedicoService>();
 }
 
 // Configura o servi�os da API.
