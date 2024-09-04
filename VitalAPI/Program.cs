@@ -97,6 +97,9 @@ static void ConfigurarServices(WebApplicationBuilder builder)
         options.SuppressModelStateInvalidFilter = true;
     });
 
+    AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
+
     builder.Services.AddSwaggerGen(c =>
     {
         c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme

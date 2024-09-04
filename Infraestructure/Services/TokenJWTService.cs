@@ -19,7 +19,7 @@ namespace Application.Services.Classes
         public string GenerateToken(Usuario user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            byte[] key = Encoding.UTF8.GetBytes(_configuration["KeySecret"]);
+            byte[] key = Encoding.UTF8.GetBytes(_configuration["VitalAPI:KeySecret"]);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -31,7 +31,7 @@ namespace Application.Services.Classes
                     new Claim( "CPF", user.CPF),
                 }),
 
-                Expires = DateTime.UtcNow.AddHours(Convert.ToInt32(_configuration["TimeTokenIsValid"])),
+                Expires = DateTime.UtcNow.AddHours(Convert.ToInt32(_configuration["VitalAPI:TimeTokenIsValid"])),
                 SigningCredentials = new SigningCredentials(
                     new SymmetricSecurityKey(key),
                     SecurityAlgorithms.HmacSha256Signature

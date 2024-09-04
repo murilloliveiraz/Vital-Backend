@@ -1,4 +1,5 @@
 ﻿using Application.DTOS.Usuario;
+using Application.DTOS.Utils;
 using Application.Helpers;
 using Application.Services.Interfaces;
 using AutoMapper;
@@ -77,6 +78,24 @@ namespace Application.Services.Classes
             }
 
             throw new Exception("Credenciais inválidas.");
+        }
+
+        public async Task<OperationResult> ResetPasswordAsync(string email, string token, string newPassword)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                return OperationResult.Failure("Usuário não encontrado.");
+            }
+
+            var result = await _userManager.ResetPasswordAsync(user, token, newPassword);
+            if (result.Succeeded)
+            {
+                return OperationResult.Success("A senha foi redefinida com sucesso.");
+            }
+
+            var errors = result.Errors.Select(e => e.Description);
+            return OperationResult.Failure("Falha ao redefinir a senha.", errors);
         }
     }
 }

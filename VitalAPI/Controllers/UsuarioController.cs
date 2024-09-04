@@ -1,5 +1,7 @@
 ﻿using Application.DTOS.Usuario;
+using Application.DTOS.Utils;
 using Application.Services.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace VitalAPI.Controllers
@@ -25,6 +27,24 @@ namespace VitalAPI.Controllers
         public async Task<IActionResult> Authenticate(UsuarioLoginRequestContract model)
         {
             return Ok(await _userService.Login(model));
+        }
+
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword(ResetPasswordModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var result = await _userService.ResetPasswordAsync(model.Email, model.Token, model.NewPassword);
+
+            if (result.Succeeded)
+            {
+                return Ok(result.Message);
+            }
+
+            return BadRequest(result.Errors);
         }
     }
 }
