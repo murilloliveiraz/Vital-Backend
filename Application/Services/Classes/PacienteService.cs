@@ -23,7 +23,7 @@ namespace Application.Services.Classes
 
         public async Task<PacienteResponseContract> Create(PacienteRequestContract model)
         {
-            model.DataNascimento = DateTime.SpecifyKind(model.DataNascimento, DateTimeKind.Unspecified);
+            // model.DataNascimento = DateTime.SpecifyKind(model.DataNascimento, DateTimeKind.Unspecified);
             var user = _mapper.Map<UsuarioRequestContract>(model);
             user.Role = "Paciente";
             var userCreated = await _usuarioService.Register(user);
