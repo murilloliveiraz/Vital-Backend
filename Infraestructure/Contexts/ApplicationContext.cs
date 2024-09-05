@@ -16,6 +16,7 @@ namespace Infraestructure.Contexts
         public DbSet<Medico> Medicos { get; set; }
         public DbSet<Exame> Exames { get; set; }
         public DbSet<Paciente> Pacientes { get; set; }
+        public DbSet<Prontuario> Prontuarios { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

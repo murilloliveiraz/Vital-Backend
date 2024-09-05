@@ -13,12 +13,19 @@ namespace Application.Services.Classes
         private readonly IPacienteRepository _pacienteRepository;
         private readonly IMapper _mapper;
         private readonly IUsuarioService _usuarioService;
+        private readonly IProntuarioService _prontuarioService;
 
-        public PacienteService(IUsuarioService usuarioService, IMapper mapper, IPacienteRepository pacienteRepository)
+        public PacienteService(
+            IUsuarioService usuarioService,
+            IMapper mapper,
+            IPacienteRepository pacienteRepository,
+            IProntuarioService prontuarioService
+            )
         {
             _usuarioService = usuarioService;
             _mapper = mapper;
             _pacienteRepository = pacienteRepository;
+            _prontuarioService = prontuarioService;
         }
 
         public async Task<PacienteResponseContract> Create(PacienteRequestContract model)
@@ -30,6 +37,7 @@ namespace Application.Services.Classes
             var paciente = _mapper.Map<Paciente>(model);
             paciente.UserId = userCreated.Id;
             await _pacienteRepository.Create(paciente);
+            await _prontuarioService.Create(paciente.Id);
             return _mapper.Map<PacienteResponseContract>(paciente);
         }
 

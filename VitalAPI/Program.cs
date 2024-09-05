@@ -62,6 +62,7 @@ static void ConfigurarInjecaoDeDependencia(WebApplicationBuilder builder)
         configs.AddProfile<PacienteProfile>();
         configs.AddProfile<MedicoProfile>();
         configs.AddProfile<AdminProfile>();
+        configs.AddProfile<ProntuarioProfile>();
         configs.AddProfile<HospitalServicoProfile>();
     });
 
@@ -86,6 +87,9 @@ static void ConfigurarInjecaoDeDependencia(WebApplicationBuilder builder)
     .AddScoped<IPacienteService, PacienteService>()
     .AddScoped<IMedicoRepository, MedicoRepository>()
     .AddScoped<IMedicoService, MedicoService>()
+    .AddScoped<IRegistroRepository, RegistroRepository>()
+    .AddScoped<IProntuarioRepository, ProntuarioRepository>()
+    .AddScoped<IProntuarioService, ProntuarioService>()
     .AddScoped<IAdminRepository, AdminRepository>()
     .AddScoped<IAdminService, AdminService>();
 }

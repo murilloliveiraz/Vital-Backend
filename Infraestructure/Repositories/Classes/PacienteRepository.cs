@@ -44,7 +44,7 @@ namespace Infraestructure.Repositories.Classes
 
         public async Task<Paciente?> GetById(int id)
         {
-            return await _context.Pacientes.AsNoTracking().Include(p => p.Usuario).FirstOrDefaultAsync(p => p.Id == id);
+            return await _context.Pacientes.Include(p => p.Prontuario).AsNoTracking().Include(p => p.Usuario).FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<Paciente?> GetByName(string name)

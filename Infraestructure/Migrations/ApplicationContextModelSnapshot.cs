@@ -178,6 +178,10 @@ namespace Infraestructure.Migrations
                     b.Property<DateTime>("DataNascimento")
                         .HasColumnType("timestamp");
 
+                    b.Property<string>("Sexo")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("text");
@@ -190,6 +194,28 @@ namespace Infraestructure.Migrations
                     b.ToTable("pacientes", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Prontuario", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DataDeCriacao")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("PacienteId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PacienteId")
+                        .IsUnique();
+
+                    b.ToTable("Prontuarios");
+                });
+
             modelBuilder.Entity("Domain.Servico", b =>
                 {
                     b.Property<int>("ServicoId")
@@ -199,7 +225,7 @@ namespace Infraestructure.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ServicoId"));
 
                     b.Property<DateTime?>("DataInativacao")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Descricao")
                         .IsRequired()
@@ -234,10 +260,10 @@ namespace Infraestructure.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("DataCriacao")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DataInativacao")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -502,6 +528,15 @@ namespace Infraestructure.Migrations
                     b.Navigation("Usuario");
                 });
 
+            modelBuilder.Entity("Domain.Prontuario", b =>
+                {
+                    b.HasOne("Domain.Paciente", null)
+                        .WithOne("Prontuario")
+                        .HasForeignKey("Domain.Prontuario", "PacienteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -563,6 +598,9 @@ namespace Infraestructure.Migrations
             modelBuilder.Entity("Domain.Paciente", b =>
                 {
                     b.Navigation("Exames");
+
+                    b.Navigation("Prontuario")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.Servico", b =>
