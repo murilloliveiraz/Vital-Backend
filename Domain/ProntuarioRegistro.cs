@@ -10,6 +10,7 @@ namespace Domain
         public int ProntuarioId { get; set; }
         public string Tipo { get; set; }
         public DateTime Data { get; set; }
+        [BsonSerializer(typeof(MongoDB.Bson.Serialization.Serializers.BsonDocumentSerializer))]
         public BsonDocument Conteudo { get; set; }
     }
 }

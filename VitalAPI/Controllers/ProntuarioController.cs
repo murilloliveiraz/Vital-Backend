@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace VitalAPI.Controllers
 {
-    [Route("api/prontuarios/")]
     [ApiController]
+    [Route("api/prontuarios/")]
     public class ProntuarioController : ControllerBase
     {
         private readonly IProntuarioService _prontuarioService;
@@ -18,6 +18,10 @@ namespace VitalAPI.Controllers
         [HttpPost("{prontuarioId}/registros")]
         public async Task<IActionResult> CreateRecord(int prontuarioId, [FromBody] RegistroRequestContract dto)
         {
+            if (dto == null)
+            {
+                return BadRequest("O corpo da requisição não pode ser nulo.");
+            }
             await _prontuarioService.CreateRecord(prontuarioId, dto);
             return Ok();
         }

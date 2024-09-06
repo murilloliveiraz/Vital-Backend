@@ -2,8 +2,10 @@
 using Application.Services.Interfaces;
 using AutoMapper;
 using Domain;
+using Humanizer;
 using Infraestructure.Repositories.Interfaces;
 using MongoDB.Bson;
+using System.Text.Json;
 
 namespace Application.Services.Classes
 {
@@ -40,7 +42,7 @@ namespace Application.Services.Classes
                 Tipo = "Criação",
                 Conteudo = new
                 {
-                    Observação = "Prontuário criado automaticamente ao registrar o paciente.",
+                   Observação = "Prontuário criado automaticamente ao registrar o paciente." 
                 }
             };
 
@@ -54,8 +56,8 @@ namespace Application.Services.Classes
             {
                 ProntuarioId = prontuarioId,
                 Tipo = conteudo.Tipo,
-                Data = DateTime.UtcNow,
-                Conteudo = conteudo.Conteudo.ToBsonDocument(),
+                Data = DateTime.Now,
+                Conteudo = BsonDocument.Parse(JsonSerializer.Serialize(conteudo.Conteudo))
             };
 
             await _registroRepository.CreateRecord(registro);

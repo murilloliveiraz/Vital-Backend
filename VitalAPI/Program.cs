@@ -13,6 +13,7 @@ using Application.Services.Interfaces;
 using Infraestructure.Repositories.Interfaces;
 using Infraestructure.Repositories.Classes;
 using Application.Helpers;
+using Application.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -102,7 +103,10 @@ static void ConfigurarServices(WebApplicationBuilder builder)
     .AddControllers().ConfigureApiBehaviorOptions(options =>
     {
         options.SuppressModelStateInvalidFilter = true;
-    });
+    }).AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new BsonDocumentJsonConverter());
+    }); ;
 
     AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
