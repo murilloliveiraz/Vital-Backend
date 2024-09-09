@@ -9,7 +9,7 @@
         public DateTime Data { get; set; }
         public int PacienteId { get; set; }
         public Paciente Paciente { get; set; }
-        public string CaminhoDoS3Local { get; set; }
+        public string S3KeyPath { get; set; }
         public string PrefixoDaPasta { get; set; }
         public string ArquivoResultadoUrl { get; set; }
         public string EmailParaReceberResultado { get; set; }
