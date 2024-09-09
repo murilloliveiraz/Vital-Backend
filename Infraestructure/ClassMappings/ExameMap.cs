@@ -34,7 +34,10 @@ namespace Infraestructure.ClassMappings
             builder.Property(ex => ex.ArquivoResultadoUrl)
             .HasColumnType("VARCHAR");
 
-            builder.Property(ex => ex.CaminhoResultado)
+            builder.Property(ex => ex.CaminhoDoS3Local)
+            .HasColumnType("VARCHAR");
+
+            builder.Property(ex => ex.PrefixoDaPasta)
             .HasColumnType("VARCHAR");
         }
     }
