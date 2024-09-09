@@ -14,6 +14,9 @@ using Infraestructure.Repositories.Interfaces;
 using Infraestructure.Repositories.Classes;
 using Application.Helpers;
 using Application.Utils;
+using Infraestructure.Services.Helpers;
+using Infraestructure.Services.Interfaces;
+using Infraestructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -52,6 +55,9 @@ static void ConfigurarInjecaoDeDependencia(WebApplicationBuilder builder)
         return new MongoClient(mongoConfig.ConnectionString);
     });
 
+    builder.Services.Configure<S3StorageOptions>(builder.Configuration.GetSection("S3Storage:Bucket-Name"));
+
+
     builder.Services.AddIdentity<Usuario, IdentityRole>()
         .AddEntityFrameworkStores<ApplicationContext>()
         .AddDefaultTokenProviders();
@@ -77,6 +83,7 @@ static void ConfigurarInjecaoDeDependencia(WebApplicationBuilder builder)
     .AddSingleton(mapper)
     .AddScoped<IEmailService, EmailService>()
     .AddScoped<TokenJWTService>()
+    .AddSingleton<IS3StorageService, S3StorageService>()
     .AddScoped<IUsuarioService, UsuarioService>()
     .AddScoped<IHospitalService, HospitalService>()
     .AddScoped<IHospitalRepository, HospitalRepository>()
