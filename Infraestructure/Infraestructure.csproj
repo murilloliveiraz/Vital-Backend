@@ -18,6 +18,8 @@
 		<PackageReference Include="MongoDB.Driver" Version="2.28.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.10" />
+		<PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.301" />
+		<PackageReference Include="AWSSDK.S3" Version="3.7.400.3" />
 	</ItemGroup>
 
 	<ItemGroup>
