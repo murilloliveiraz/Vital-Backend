@@ -1,12 +1,16 @@
-﻿using Application.DTOS.Medico;
+﻿using Application.DTOS.Exame;
 using Domain;
 
 namespace Application.Services.Interfaces
 {
-    public interface IExameService: IService<MedicoRequestContract, MedicoResponseContract, int>
+    public interface IExameService: IService<AgendarExameRequestContract, AgendarExameResponseContract, int>
     {
-        Task<IEnumerable<Exame>?> GetAllScheduled();
+        Task<IEnumerable<AgendarExameResponseContract>?> GetAllScheduled();
 
-        Task<IEnumerable<Exame>?> GetAllCompleted();
+        Task<IEnumerable<ExameConcluidoResponse>?> GetAllCompleted();
+        Task<IEnumerable<AgendarExameResponseContract>?> GetAllPatientExamsScheduled(int id);
+
+        Task<IEnumerable<ExameConcluidoResponse>?> GetAllPatientExamsCompleted(int id);
+        Task<AdicionarResultadoResponseContract> AttachResult(AdicionarResultadoRequestContract model);
     }
 }

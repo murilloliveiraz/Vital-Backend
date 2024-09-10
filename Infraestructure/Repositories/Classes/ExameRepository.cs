@@ -40,6 +40,20 @@ namespace Infraestructure.Repositories.Classes
            .ToListAsync();
         }
 
+        public async Task<IEnumerable<Exame>?> GetAllPatientExamsCompleted(int id)
+        {
+            return await _context.Exames.AsNoTracking().Where(e => e.PacienteId == id && e.Status == "Concluido")
+           .OrderByDescending(e => e.Data)
+           .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Exame>?> GetAllPatientExamsScheduled(int id)
+        {
+            return await _context.Exames.AsNoTracking().Where(e => e.PacienteId == id && e.Status == "Agendado")
+           .OrderByDescending(e => e.Data)
+           .ToListAsync();
+        }
+
         public async Task<IEnumerable<Exame>?> GetAllScheduled()
         {
             return await _context.Exames.AsNoTracking().Where(e => e.Status == "Agendado")

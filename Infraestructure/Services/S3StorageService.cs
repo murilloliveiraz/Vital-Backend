@@ -44,7 +44,7 @@ namespace Infraestructure.Services
             var bucketExists = await Amazon.S3.Util.AmazonS3Util.DoesS3BucketExistV2Async(_s3Client, _options.BucketName);
             if (!bucketExists)
             {
-                return new S3FileResult { Success = false, Message = "Bucket does not exist." };
+                return new S3FileResult { Success = false};
             }
 
             var s3Object = await _s3Client.GetObjectAsync(_options.BucketName, key);

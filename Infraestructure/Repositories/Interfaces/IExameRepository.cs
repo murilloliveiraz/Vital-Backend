@@ -7,5 +7,8 @@ namespace Infraestructure.Repositories.Interfaces
         Task<IEnumerable<Exame>?> GetAllScheduled();
 
         Task<IEnumerable<Exame>?> GetAllCompleted();
+        Task<IEnumerable<Exame>?> GetAllPatientExamsScheduled(int id);
+
+        Task<IEnumerable<Exame>?> GetAllPatientExamsCompleted(int id);
     }
 }
