@@ -17,6 +17,7 @@ using Application.Utils;
 using Infraestructure.Services.Helpers;
 using Infraestructure.Services.Interfaces;
 using Infraestructure.Services;
+using Amazon.S3;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -57,6 +58,8 @@ static void ConfigurarInjecaoDeDependencia(WebApplicationBuilder builder)
 
     builder.Services.Configure<S3StorageOptions>(builder.Configuration.GetSection("S3Storage:Bucket-Name"));
 
+    builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
+    builder.Services.AddAWSService<IAmazonS3>();
 
     builder.Services.AddIdentity<Usuario, IdentityRole>()
         .AddEntityFrameworkStores<ApplicationContext>()
@@ -70,6 +73,7 @@ static void ConfigurarInjecaoDeDependencia(WebApplicationBuilder builder)
         configs.AddProfile<MedicoProfile>();
         configs.AddProfile<AdminProfile>();
         configs.AddProfile<ProntuarioProfile>();
+        configs.AddProfile<ExameProfile>();
         configs.AddProfile<HospitalServicoProfile>();
     });
 
@@ -83,7 +87,7 @@ static void ConfigurarInjecaoDeDependencia(WebApplicationBuilder builder)
     .AddSingleton(mapper)
     .AddScoped<IEmailService, EmailService>()
     .AddScoped<TokenJWTService>()
-    .AddSingleton<IS3StorageService, S3StorageService>()
+    .AddScoped<IS3StorageService, S3StorageService>()
     .AddScoped<IUsuarioService, UsuarioService>()
     .AddScoped<IHospitalService, HospitalService>()
     .AddScoped<IHospitalRepository, HospitalRepository>()
@@ -99,7 +103,9 @@ static void ConfigurarInjecaoDeDependencia(WebApplicationBuilder builder)
     .AddScoped<IProntuarioRepository, ProntuarioRepository>()
     .AddScoped<IProntuarioService, ProntuarioService>()
     .AddScoped<IAdminRepository, AdminRepository>()
-    .AddScoped<IAdminService, AdminService>();
+    .AddScoped<IAdminService, AdminService>()
+    .AddScoped<IExameRepository, ExameRepository>()
+    .AddScoped<IExameService, ExameService>();
 }
 
 // Configura o servi�os da API.
@@ -161,6 +167,7 @@ static void ConfigurarAplicacao(WebApplication app)
             c.RoutePrefix = string.Empty;
         });
 
+    var devClient = "http://localhost:4200";
     app.UseCors(x => x
         .AllowAnyOrigin() // Permite todas as origens
         .AllowAnyMethod() // Permite todos os m�todos

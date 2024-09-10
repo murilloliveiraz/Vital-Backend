@@ -15,6 +15,7 @@ namespace Infraestructure.Repositories.Classes
         }
         public async Task<Exame> Create(Exame model)
         {
+            model.Status = "Agendado";
             await _context.Exames.AddAsync(model);
             await _context.SaveChangesAsync();
             return model;

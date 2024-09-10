@@ -31,10 +31,10 @@ namespace Infraestructure.ClassMappings
             .HasColumnType("VARCHAR")
             .IsRequired();
 
-            builder.Property(ex => ex.ArquivoResultadoUrl)
+            builder.Property(ex => ex.Base64)
             .HasColumnType("VARCHAR");
 
-            builder.Property(ex => ex.CaminhoDoS3Local)
+            builder.Property(ex => ex.S3KeyPath)
             .HasColumnType("VARCHAR");
 
             builder.Property(ex => ex.PrefixoDaPasta)
