@@ -6,6 +6,5 @@ namespace Application.DTOS.Exame
     {
         public int ExameId { get; set; }
         public IFormFile File;
-        public string Prefix;
     }
 }
