@@ -1,7 +1,9 @@
 ﻿using Application.DTOS.Usuario;
 using Application.DTOS.Utils;
 using Application.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace VitalAPI.Controllers
@@ -18,6 +20,7 @@ namespace VitalAPI.Controllers
         }
 
         [HttpPost("register")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> Create(UsuarioRequestContract model)
         {
             return Created("", await _userService.Register(model));
@@ -45,6 +48,24 @@ namespace VitalAPI.Controllers
             }
 
             return BadRequest(result.Errors);
+        }
+
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordRequest request)
+        {
+            if (string.IsNullOrEmpty(request.Email))
+            {
+                return BadRequest("O e-mail é obrigatório.");
+            }
+
+            var result = await _userService.ForgotMyPassword(request.Email);
+
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Message);
+            }
+
+            return Ok(result.Message);
         }
     }
 }
