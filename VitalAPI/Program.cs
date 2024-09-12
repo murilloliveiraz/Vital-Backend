@@ -18,12 +18,16 @@ using Infraestructure.Services.Helpers;
 using Infraestructure.Services.Interfaces;
 using Infraestructure.Services;
 using Amazon.S3;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-ConfigurarServices(builder);
-
 ConfigurarInjecaoDeDependencia(builder);
+
+ConfigurarServices(builder);
 
 var app = builder.Build();
 
@@ -116,10 +120,7 @@ static void ConfigurarServices(WebApplicationBuilder builder)
     .AddControllers().ConfigureApiBehaviorOptions(options =>
     {
         options.SuppressModelStateInvalidFilter = true;
-    }).AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.Converters.Add(new BsonDocumentJsonConverter());
-    }); ;
+    }).AddNewtonsoftJson();
 
     AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
@@ -131,7 +132,7 @@ static void ConfigurarServices(WebApplicationBuilder builder)
             Description = "JTW Authorization header using the Beaerer scheme (Example: 'Bearer 12345abcdef')",
             Name = "Authorization",
             In = ParameterLocation.Header,
-            Type = SecuritySchemeType.ApiKey,
+            Type = SecuritySchemeType.Http,
             Scheme = "Bearer"
         });
         c.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -150,6 +151,53 @@ static void ConfigurarServices(WebApplicationBuilder builder)
         });
         c.SwaggerDoc("v1", new OpenApiInfo { Title = "Hospital.Api", Version = "v1" });
     });
+
+    builder.Services.AddAuthorization(options =>
+    {
+        options.AddPolicy("AdminOnly",
+             policy => policy.RequireRole("Administrador"));
+        options.AddPolicy("AdminOrMedico",
+             policy => policy.RequireRole("Administrator", "Medico"));
+    });
+
+    builder.Services.AddAuthentication(options => {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    }).AddJwtBearer(x =>
+   {
+       x.RequireHttpsMetadata = false;
+       x.SaveToken = true;
+       x.TokenValidationParameters = new TokenValidationParameters
+       {
+           ValidateIssuerSigningKey = true,
+           IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["VItalAPI:KeySecret"])),
+           ValidateIssuer = false,
+           ValidateAudience = false
+       };
+       x.Events = new JwtBearerEvents
+       {
+           OnChallenge = context =>
+           {
+               // Suprimir o comportamento padrão do OnChallenge
+               context.HandleResponse();
+
+               // Definir o objeto de erro personalizado
+               context.Response.StatusCode = 401;
+               context.Response.ContentType = "application/json";
+               var errorResponse = new 
+               {
+                   StatusCode = 401,
+                   Title = "Unauthorized",
+                   Description = "Você precisa estar autenticado para acessar este recurso.",
+                   Date = DateTime.Now,
+               };
+
+               // Escrever o objeto de erro na resposta
+               return context.Response.WriteAsync(System.Text.Json.JsonSerializer.Serialize(errorResponse));
+           }
+       };
+   });
 }
 
 // Configura os servi�os na aplica��o.

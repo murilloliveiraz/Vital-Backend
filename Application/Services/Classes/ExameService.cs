@@ -1,4 +1,5 @@
 using Application.DTOS.Exame;
+using Application.Helpers;
 using Application.Services.Interfaces;
 using AutoMapper;
 using Domain;
@@ -17,13 +18,16 @@ namespace Application.Services.Classes
         private readonly IMapper _mapper;
         private readonly IS3StorageService _s3StorageService;
         private IConfiguration _configuration;
-        public ExameService(IMapper mapper, IExameRepository exameRepository, IS3StorageService s3StorageService, IPacienteService pacienteService, IConfiguration configuration)
+
+        private readonly IEmailService _emailSender;
+        public ExameService(IMapper mapper, IExameRepository exameRepository, IS3StorageService s3StorageService, IPacienteService pacienteService, IConfiguration configuration, IEmailService emailSender)
         {
             _mapper = mapper;
             _exameRepository = exameRepository;
             _s3StorageService = s3StorageService;
             _pacienteService = pacienteService;
             _configuration = configuration;
+            _emailSender = emailSender;
         }
 
         public async Task<AdicionarResultadoResponseContract> AttachResult(AdicionarResultadoRequestContract model)
@@ -38,6 +42,13 @@ namespace Application.Services.Classes
                 exame.Base64 = base64File;
             }
             await _exameRepository.Update(exame);
+            MailRequest mailRequest = new MailRequest
+            {
+                ToEmail = exame.EmailParaReceberResultado,
+                Subject = "Seu resultado já está disponível",
+                Body = CommunicationEmail.ResultAvailableEmail("http://localhost:4200")
+            };
+            await _emailSender.SendEmailAsync(mailRequest);
             return _mapper.Map<AdicionarResultadoResponseContract>(exame);
         }
 
@@ -52,6 +63,13 @@ namespace Application.Services.Classes
             string dataFormatada = exame.Data.ToString("yyyyMMdd");
             exame.PrefixoDaPasta = $"{paciente.CPF}/{dataFormatada}";
             exame = await _exameRepository.Create(exame);
+            MailRequest mailRequest = new MailRequest
+            {
+                ToEmail = paciente.Email,
+                Subject = "Confirmação de agendamento de consulta",
+                Body = CommunicationEmail.AppointmentConfirmationEmail(exame.Nome)
+            };
+            await _emailSender.SendEmailAsync(mailRequest);
             return _mapper.Map<AgendarExameResponseContract>(exame);
         }
 

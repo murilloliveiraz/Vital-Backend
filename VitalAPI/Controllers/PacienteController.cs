@@ -2,6 +2,7 @@
 using Application.Services.Classes;
 using Application.Services.Interfaces;
 using Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace VitalAPI.Controllers
@@ -32,6 +33,7 @@ namespace VitalAPI.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Get()
         {
             return Ok(await _pacienteService.Get());

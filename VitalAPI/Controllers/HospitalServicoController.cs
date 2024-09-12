@@ -1,5 +1,6 @@
 using Application.DTOS.HospitalServico;
 using Application.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace VitalAPI.Controllers
@@ -15,18 +16,21 @@ namespace VitalAPI.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<IActionResult> GetAllByHospitalId (int id)
         {
             return Ok(await _hospitalServicoService.GetAllByHospitalId(id));
         }
 
         [HttpGet("{hospitalId}/{servicoId}")]
+        [Authorize]
         public async Task<IActionResult> GetByHospitalIdAndServicoId(int hospitalId, int servicoId)
         {
             return Ok(await _hospitalServicoService.GetByHospitalIdAndServicoId(hospitalId, servicoId));
         } 
 
         [HttpPost]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> Post(HospitalServicoRequestContract hospitalServico)
         {
             var createdHospitalServico = await _hospitalServicoService.Create(hospitalServico);
@@ -37,6 +41,7 @@ namespace VitalAPI.Controllers
         }
 
         [HttpDelete("{hospitalId}/{servicoId}")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> Delete(int hospitalId, int servicoId)
         {
             await _hospitalServicoService.Delete(hospitalId, servicoId);

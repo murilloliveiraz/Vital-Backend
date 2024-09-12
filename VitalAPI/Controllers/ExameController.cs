@@ -1,5 +1,6 @@
 ﻿using Application.DTOS.Exame;
 using Application.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace VitalAPI.Controllers
@@ -16,6 +17,7 @@ namespace VitalAPI.Controllers
         }
 
         [HttpPost("agendar")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> Create(AgendarExameRequestContract model)
         {
             if (!ModelState.IsValid)
@@ -28,6 +30,7 @@ namespace VitalAPI.Controllers
         }
 
         [HttpPost("{id}/anexar-resultado")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> AttachResult(int id, IFormFile file)
         {
             if (!ModelState.IsValid)
@@ -44,6 +47,7 @@ namespace VitalAPI.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> Get()
         {
             var exames = await _exameService.Get();
@@ -51,6 +55,7 @@ namespace VitalAPI.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<IActionResult> GetById(int id)
         {
             var exame = await _exameService.GetById(id);
@@ -63,6 +68,7 @@ namespace VitalAPI.Controllers
         }
 
         [HttpGet("concluidos")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> GetAllCompleted()
         {
             var examesConcluidos = await _exameService.GetAllCompleted();
@@ -70,6 +76,7 @@ namespace VitalAPI.Controllers
         }
 
         [HttpGet("paciente/{id}/concluidos")]
+        [Authorize]
         public async Task<IActionResult> GetAllPatientExamsCompleted(int id)
         {
             var examesConcluidos = await _exameService.GetAllPatientExamsCompleted(id);
@@ -77,6 +84,7 @@ namespace VitalAPI.Controllers
         }
 
         [HttpGet("paciente/{id}/agendados")]
+        [Authorize]
         public async Task<IActionResult> GetAllPatientExamsScheduled(int id)
         {
             var examesAgendados = await _exameService.GetAllPatientExamsScheduled(id);
@@ -84,6 +92,7 @@ namespace VitalAPI.Controllers
         }
 
         [HttpGet("agendados")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> GetAllScheduled()
         {
             var examesAgendados = await _exameService.GetAllScheduled();
@@ -91,6 +100,7 @@ namespace VitalAPI.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> Update(int id, [FromBody] AgendarExameRequestContract model)
         {
             if (!ModelState.IsValid)
@@ -103,6 +113,7 @@ namespace VitalAPI.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> Delete(int id)
         {
             await _exameService.Delete(id);

@@ -1,5 +1,6 @@
 using Application.DTOS.Medico;
 using Application.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace VitalAPI.Controllers
@@ -16,6 +17,7 @@ namespace VitalAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> Create(MedicoRequestContract model)
         {
             var medico = await _medicoService.Create(model);
@@ -23,6 +25,7 @@ namespace VitalAPI.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> Delete(int id)
         {
             await _medicoService.Delete(id);
@@ -30,30 +33,35 @@ namespace VitalAPI.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Get()
         {
             return Ok(await _medicoService.Get());
         }
 
         [HttpGet("pesquisar/crm")]
+        [Authorize]
         public async Task<IActionResult> GetByCRM(string crm)
         {
             return Ok(await _medicoService.GetByCRM(crm));
         }
 
         [HttpGet("pesquisar/especializacao")]
+        [Authorize]
         public async Task<IActionResult> GetAllBySpecialization(string specialization)
         {
             return Ok(await _medicoService.GetAllBySpecialization(specialization));
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<IActionResult> GetById(int id)
         {
             return Ok(await _medicoService.GetById(id));
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> Update(int id, MedicoRequestContract model)
         {
             await _medicoService.Update(id, model);

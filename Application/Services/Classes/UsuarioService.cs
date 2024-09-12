@@ -6,6 +6,7 @@ using AutoMapper;
 using Domain;
 using Infraestructure.Contexts;
 using Microsoft.AspNetCore.Identity;
+using System.Web;
 
 namespace Application.Services.Classes
 {
@@ -45,8 +46,9 @@ namespace Application.Services.Classes
             var result = await _userManager.CreateAsync(user);
             if (result.Succeeded)
             {
-                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var callbackUrl = $"https://localhost:4200/reset-password?userId={user.Id}&token={token}";
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user); 
+                var encodedToken = HttpUtility.UrlEncode(token);
+                var callbackUrl = $"https://localhost:4200/reset-password?userId={user.Id}&token={encodedToken}";
                 MailRequest mailRequest = new MailRequest
                 {
                     ToEmail = user.Email,
@@ -96,6 +98,27 @@ namespace Application.Services.Classes
 
             var errors = result.Errors.Select(e => e.Description);
             return OperationResult.Failure("Falha ao redefinir a senha.", errors);
+        }
+
+        public async Task<OperationResult> ForgotMyPassword(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                return OperationResult.Failure("Usuário não encontrado.");
+            }
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var encodedToken = HttpUtility.UrlEncode(token);
+            var callbackUrl = $"https://localhost:4200/reset-password?userId={user.Id}&token={encodedToken}";
+            MailRequest mailRequest = new MailRequest
+            {
+                ToEmail = user.Email,
+                Subject = "Redefina sua senha",
+                Body = CommunicationEmail.ChangePasswordEmail(callbackUrl)
+            };
+            await _emailSender.SendEmailAsync(mailRequest);
+            return OperationResult.Success("O email para redefinir a senha foi enviado.");
         }
     }
 }

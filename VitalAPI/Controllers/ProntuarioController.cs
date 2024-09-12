@@ -1,5 +1,6 @@
 ﻿using Application.DTOS.RegistroProntuario;
 using Application.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace VitalAPI.Controllers
@@ -16,6 +17,7 @@ namespace VitalAPI.Controllers
         }
 
         [HttpPost("{prontuarioId}/registros")]
+        [Authorize(Policy = "AdminOrMedico")]
         public async Task<IActionResult> CreateRecord(int prontuarioId, [FromBody] RegistroRequestContract dto)
         {
             if (dto == null)
@@ -27,6 +29,7 @@ namespace VitalAPI.Controllers
         }
 
         [HttpGet("{pacienteId}")]
+        [Authorize(Policy = "AdminOrMedico")]
         public async Task<IActionResult> GetPatientMedialRecord(int pacienteId)
         {
             var prontuario = await _prontuarioService.GetAllRecords(pacienteId);

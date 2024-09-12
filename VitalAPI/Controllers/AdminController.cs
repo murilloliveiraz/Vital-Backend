@@ -1,5 +1,6 @@
 ﻿using Application.DTOS.Admin;
 using Application.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace VitalAPI.Controllers
@@ -16,6 +17,7 @@ namespace VitalAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> Create(AdminRequestContract model)
         {
             var admin = await _adminService.Create(model);
@@ -23,6 +25,7 @@ namespace VitalAPI.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> Delete(int id)
         {
             await _adminService.Delete(id);
@@ -30,18 +33,21 @@ namespace VitalAPI.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> Get()
         {
             return Ok(await _adminService.Get());
         }
 
         [HttpGet("{id}")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> GetById(int id)
         {
             return Ok(await _adminService.GetById(id));
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> Update(int id, AdminRequestContract model)
         {
             await _adminService.Update(id, model);
