@@ -10,5 +10,6 @@ namespace Application.Services.Interfaces
         Task<UsuarioLoginResponseContract> Login(UsuarioLoginRequestContract model);
         Task<OperationResult> ResetPasswordAsync(string email, string token, string newPassword);
         Task<OperationResult> ForgotMyPassword(string email);
+        Task<UsuarioLoginResponseContract> LoginWithGoogle(string credential);
     }
 }

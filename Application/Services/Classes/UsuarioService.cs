@@ -4,8 +4,10 @@ using Application.Helpers;
 using Application.Services.Interfaces;
 using AutoMapper;
 using Domain;
+using Google.Apis.Auth;
 using Infraestructure.Contexts;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using System.Web;
 
 namespace Application.Services.Classes
@@ -16,6 +18,7 @@ namespace Application.Services.Classes
         private readonly ApplicationContext _context;
         private readonly IMapper _mapper;
         private readonly IEmailService _emailSender;
+        private readonly IConfiguration _configuration;
         private readonly TokenJWTService _tokenService;
 
         public UsuarioService(
@@ -23,14 +26,15 @@ namespace Application.Services.Classes
             UserManager<Usuario> userManager,
             IMapper mapper,
             IEmailService emailSender,
-            TokenJWTService tokenService
-        )
+            TokenJWTService tokenService,
+            IConfiguration configuration)
         {
             _context = context;
             _userManager = userManager;
             _mapper = mapper;
             _emailSender = emailSender;
             _tokenService = tokenService;
+            _configuration = configuration;
         }
 
         public async Task<Usuario> Register(UsuarioRequestContract model)
@@ -119,6 +123,32 @@ namespace Application.Services.Classes
             };
             await _emailSender.SendEmailAsync(mailRequest);
             return OperationResult.Success("O email para redefinir a senha foi enviado.");
+        }
+
+        public async Task<UsuarioLoginResponseContract> LoginWithGoogle(string credential)
+        {
+            var settings = new GoogleJsonWebSignature.ValidationSettings()
+            {
+                Audience = new List<string> { _configuration["google:client_id"] },
+            };
+
+            var payload = await GoogleJsonWebSignature.ValidateAsync(credential, settings);
+
+            var user = await _userManager.FindByEmailAsync(payload.Email);
+
+            if (user != null)
+            {
+                return new UsuarioLoginResponseContract
+                {
+                    Id = user.Id,
+                    Email = user.Email,
+                    CPF = user.CPF,
+                    Role = user.Role,
+                    Token = _tokenService.GenerateToken(_mapper.Map<Usuario>(user))
+                };
+            }
+
+            throw new Exception("Credenciais inválidas.");
         }
     }
 }
