@@ -12,6 +12,8 @@
 	   <PackageReference Include="MimeKit" Version="4.7.1" />
 	   <PackageReference Include="Google.Apis.Auth" Version="1.68.0" />
 	   <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="8.0.8" />
+	   <PackageReference Include="Google.Apis.Calendar.v3" Version="1.68.0.3473" />
+	   <PackageReference Include="RestSharp" Version="112.0.0" />
   </ItemGroup>
 
    <ItemGroup>
