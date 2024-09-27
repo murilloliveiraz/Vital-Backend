@@ -13,15 +13,14 @@ using Application.Services.Interfaces;
 using Infraestructure.Repositories.Interfaces;
 using Infraestructure.Repositories.Classes;
 using Application.Helpers;
-using Application.Utils;
 using Infraestructure.Services.Helpers;
 using Infraestructure.Services.Interfaces;
 using Infraestructure.Services;
 using Amazon.S3;
-using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using MercadoPago.Config;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -59,6 +58,8 @@ static void ConfigurarInjecaoDeDependencia(WebApplicationBuilder builder)
         var mongoConfig = sp.GetRequiredService<IOptions<MongoDatabaseConfig>>().Value;
         return new MongoClient(mongoConfig.ConnectionString);
     });
+
+    MercadoPagoConfig.AccessToken = builder.Configuration["MercadoPago:AccessToken"];
 
     builder.Services.Configure<S3StorageOptions>(builder.Configuration.GetSection("S3Storage:Bucket-Name"));
 

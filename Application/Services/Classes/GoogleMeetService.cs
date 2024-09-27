@@ -49,7 +49,7 @@ namespace Application.Services.Classes
                 return await GetConsulta(accessToken, eventId);
             }
 
-            return new { StatusCode = (int)createResponse.StatusCode, error =  };
+            return new { StatusCode = (int)createResponse.StatusCode, error =  createResponse.ErrorMessage};
         }
         private async Task<RestResponse> ExecutePostRequest(string uri, string apiKey, string accessToken, GoogleMeetEvent model)
         {
