@@ -8,6 +8,7 @@
         public Usuario Usuario { get; set; }
         public DateTime DataNascimento { get; set; }
         public ICollection<Exame> Exames { get; set; }
+        public ICollection<Consulta> Consultas { get; set; }
         public Prontuario Prontuario { get; set; }
     }
 }

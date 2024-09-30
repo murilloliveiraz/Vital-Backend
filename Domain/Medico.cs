@@ -8,6 +8,7 @@
         public string UserId { get; set; }
         public Usuario Usuario { get; set; }
         public int HospitalId { get; set; }
+        public ICollection<Consulta> Consultas { get; set; }
         public Hospital Hospital { get; set; }
     }
 }
