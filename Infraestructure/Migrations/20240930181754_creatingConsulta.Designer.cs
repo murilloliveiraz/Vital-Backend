@@ -3,6 +3,7 @@ using System;
 using Infraestructure.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infraestructure.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20240930181754_creatingConsulta")]
+    partial class creatingConsulta
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -55,58 +58,57 @@ namespace Infraestructure.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ConsultaId"));
 
                     b.Property<string>("AtestadoBase64")
-                        .HasColumnType("VARCHAR");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("Data")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("EmailParaReceberNotificacoes")
                         .IsRequired()
-                        .HasColumnType("VARCHAR");
+                        .HasColumnType("text");
 
                     b.Property<string>("Local")
-                        .IsRequired()
-                        .HasColumnType("VARCHAR");
+                        .HasColumnType("text");
 
                     b.Property<int>("MedicoId")
                         .HasColumnType("integer");
 
                     b.Property<string>("MeetLink")
-                        .HasColumnType("VARCHAR");
+                        .HasColumnType("text");
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasColumnType("VARCHAR");
+                        .HasColumnType("text");
 
                     b.Property<int>("PacienteId")
                         .HasColumnType("integer");
 
                     b.Property<string>("PrefixoDaPasta")
                         .IsRequired()
-                        .HasColumnType("VARCHAR");
+                        .HasColumnType("text");
 
                     b.Property<string>("ReceitaBase64")
-                        .HasColumnType("VARCHAR");
+                        .HasColumnType("text");
 
                     b.Property<string>("S3KeyPathAtestado")
-                        .HasColumnType("VARCHAR");
+                        .HasColumnType("text");
 
                     b.Property<string>("S3KeyPathReceita")
-                        .HasColumnType("VARCHAR");
+                        .HasColumnType("text");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("VARCHAR");
+                        .HasColumnType("text");
 
                     b.Property<string>("StatusPagamento")
-                        .HasColumnType("VARCHAR");
+                        .HasColumnType("text");
 
                     b.Property<string>("TipoConsulta")
                         .IsRequired()
-                        .HasColumnType("VARCHAR");
+                        .HasColumnType("text");
 
-                    b.Property<string>("ValorConsulta")
-                        .HasColumnType("VARCHAR");
+                    b.Property<decimal?>("ValorConsulta")
+                        .HasColumnType("numeric");
 
                     b.HasKey("ConsultaId");
 
@@ -114,7 +116,7 @@ namespace Infraestructure.Migrations
 
                     b.HasIndex("PacienteId");
 
-                    b.ToTable("consultas", (string)null);
+                    b.ToTable("Consulta");
                 });
 
             modelBuilder.Entity("Domain.Exame", b =>
