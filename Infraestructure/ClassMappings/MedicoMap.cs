@@ -23,6 +23,10 @@ namespace Infraestructure.ClassMappings
                .HasForeignKey<Medico>(m => m.UserId)
                .OnDelete(DeleteBehavior.Cascade);
 
+            builder.HasMany(m => m.Consultas)
+                .WithOne(c => c.Medico)
+                .HasForeignKey(c => c.MedicoId);
+
             builder.HasOne(m => m.Hospital)
                 .WithMany(h => h.Medicos)
                 .HasForeignKey(m => m.HospitalId);

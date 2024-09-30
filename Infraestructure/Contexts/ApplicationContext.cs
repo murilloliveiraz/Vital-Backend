@@ -16,6 +16,7 @@ namespace Infraestructure.Contexts
         public DbSet<Medico> Medicos { get; set; }
         public DbSet<Exame> Exames { get; set; }
         public DbSet<Paciente> Pacientes { get; set; }
+        public DbSet<Consulta> Consultas { get; set; }
         public DbSet<Prontuario> Prontuarios { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -27,6 +28,7 @@ namespace Infraestructure.Contexts
             modelBuilder.ApplyConfiguration(new MedicoMap());
             modelBuilder.ApplyConfiguration(new ExameMap());
             modelBuilder.ApplyConfiguration(new PacienteMap());
+            modelBuilder.ApplyConfiguration(new ConsultaMap());
             base.OnModelCreating(modelBuilder);
         }  
         public string ConnectionString()
