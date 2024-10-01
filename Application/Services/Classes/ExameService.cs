@@ -33,19 +33,17 @@ namespace Application.Services.Classes
         public async Task<AdicionarResultadoResponseContract> AttachResult(AdicionarResultadoRequestContract model)
         {
             var exame = await _exameRepository.GetById(model.ExameId);
-            string base64File = Base64FileConverter.ConvertToBase64(model.File.OpenReadStream());
             var bucketname = _configuration["S3Storage:Bucket-Name"];
             var resultUpload = await _s3StorageService.UploadFileAsync(model.File, exame.PrefixoDaPasta, bucketname);
             if (resultUpload.Success)
             {
                 exame.S3KeyPath = resultUpload.Key;
-                exame.Base64 = base64File;
             }
             await _exameRepository.Update(exame);
             MailRequest mailRequest = new MailRequest
             {
                 ToEmail = exame.EmailParaReceberResultado,
-                Subject = "Seu resultado já está disponível",
+                Subject = "Seu resultado jï¿½ estï¿½ disponï¿½vel",
                 Body = CommunicationEmail.ResultAvailableEmail("http://localhost:4200")
             };
             await _emailSender.SendEmailAsync(mailRequest);
@@ -57,7 +55,7 @@ namespace Application.Services.Classes
             var paciente = await _pacienteService.GetById(model.PacienteId);
             if (paciente == null)
             {
-                throw new Exception("Paciente não encontrado.");
+                throw new Exception("Paciente nï¿½o encontrado.");
             }
             Exame exame = _mapper.Map<Exame>(model);
             string dataFormatada = exame.Data.ToString("yyyyMMdd");
@@ -66,7 +64,7 @@ namespace Application.Services.Classes
             MailRequest mailRequest = new MailRequest
             {
                 ToEmail = paciente.Email,
-                Subject = "Confirmação de agendamento de consulta",
+                Subject = "Confirmaï¿½ï¿½o de agendamento de consulta",
                 Body = CommunicationEmail.AppointmentConfirmationEmail(exame.Nome)
             };
             await _emailSender.SendEmailAsync(mailRequest);

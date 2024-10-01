@@ -31,9 +31,6 @@ namespace Infraestructure.ClassMappings
             .HasColumnType("VARCHAR")
             .IsRequired();
 
-            builder.Property(ex => ex.Base64)
-            .HasColumnType("VARCHAR");
-
             builder.Property(ex => ex.S3KeyPath)
             .HasColumnType("VARCHAR");
 

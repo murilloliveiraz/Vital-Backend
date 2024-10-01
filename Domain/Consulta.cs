@@ -15,11 +15,8 @@
         public Paciente Paciente { get; set; }
         public int MedicoId { get; set; }
         public Medico Medico { get; set; }
-        public string? S3KeyPathAtestado { get; set; }
-        public string? S3KeyPathReceita { get; set; }
         public string PrefixoDaPasta { get; set; }
-        public string? AtestadoBase64 { get; set; }
-        public string? ReceitaBase64 { get; set; }
         public string EmailParaReceberNotificacoes { get; set; }
+        public ICollection<Documento> Documentos { get; set; }
     }
 }
