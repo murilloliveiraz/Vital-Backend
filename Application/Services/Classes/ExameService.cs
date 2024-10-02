@@ -3,8 +3,6 @@ using Application.Helpers;
 using Application.Services.Interfaces;
 using AutoMapper;
 using Domain;
-using Infraestructure.Helpers;
-using Infraestructure.Repositories.Classes;
 using Infraestructure.Repositories.Interfaces;
 using Infraestructure.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
@@ -18,7 +16,6 @@ namespace Application.Services.Classes
         private readonly IMapper _mapper;
         private readonly IS3StorageService _s3StorageService;
         private IConfiguration _configuration;
-
         private readonly IEmailService _emailSender;
         public ExameService(IMapper mapper, IExameRepository exameRepository, IS3StorageService s3StorageService, IPacienteService pacienteService, IConfiguration configuration, IEmailService emailSender)
         {
@@ -63,8 +60,8 @@ namespace Application.Services.Classes
             exame = await _exameRepository.Create(exame);
             MailRequest mailRequest = new MailRequest
             {
-                ToEmail = paciente.Email,
-                Subject = "Confirma��o de agendamento de consulta",
+                ToEmail = exame.EmailParaReceberResultado,
+                Subject = "Confirma��o de agendamento de exame",
                 Body = CommunicationEmail.AppointmentConfirmationEmail(exame.Nome)
             };
             await _emailSender.SendEmailAsync(mailRequest);

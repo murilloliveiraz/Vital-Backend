@@ -9,7 +9,6 @@ namespace Application.Services.Interfaces
 
         Task<IEnumerable<ExameConcluidoResponse>?> GetAllCompleted();
         Task<IEnumerable<AgendarExameResponseContract>?> GetAllPatientExamsScheduled(int id);
-
         Task<IEnumerable<ExameConcluidoResponse>?> GetAllPatientExamsCompleted(int id);
         Task<AdicionarResultadoResponseContract> AttachResult(AdicionarResultadoRequestContract model);
     }

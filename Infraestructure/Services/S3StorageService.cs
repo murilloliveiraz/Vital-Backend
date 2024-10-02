@@ -3,7 +3,6 @@ using Amazon.S3.Model;
 using Infraestructure.Services.Helpers;
 using Infraestructure.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Options;
 
 namespace Infraestructure.Services
 {
