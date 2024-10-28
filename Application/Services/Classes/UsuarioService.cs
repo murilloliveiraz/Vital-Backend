@@ -52,7 +52,7 @@ namespace Application.Services.Classes
             {
                 var token = await _userManager.GeneratePasswordResetTokenAsync(user); 
                 var encodedToken = HttpUtility.UrlEncode(token);
-                var callbackUrl = $"https://localhost:4200/reset-password?userId={user.Id}&token={encodedToken}";
+                var callbackUrl = $"http://localhost:4200/atualizar-senha?userId={user.Id}&token={encodedToken}";
                 MailRequest mailRequest = new MailRequest
                 {
                     ToEmail = user.Email,
@@ -114,7 +114,7 @@ namespace Application.Services.Classes
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
             var encodedToken = HttpUtility.UrlEncode(token);
-            var callbackUrl = $"https://localhost:4200/reset-password?userId={user.Id}&token={encodedToken}";
+            var callbackUrl = $"http://localhost:4200/atualizar-senha?userId={user.Id}&token={encodedToken}";
             MailRequest mailRequest = new MailRequest
             {
                 ToEmail = user.Email,
