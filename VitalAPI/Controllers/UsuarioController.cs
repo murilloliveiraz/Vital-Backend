@@ -20,7 +20,7 @@ namespace VitalAPI.Controllers
         }
 
         [HttpPost("register")]
-        [Authorize(Policy = "AdminOnly")]
+        //[Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> Create(UsuarioRequestContract model)
         {
             return Created("", await _userService.Register(model));
@@ -30,6 +30,12 @@ namespace VitalAPI.Controllers
         public async Task<IActionResult> Authenticate(UsuarioLoginRequestContract model)
         {
             return Ok(await _userService.Login(model));
+        }
+
+        [HttpPost("loginWithGoogle")]
+        public async Task<IActionResult> LoginWithGoogle([FromBody]string credentials)
+        {
+            return Ok(await _userService.LoginWithGoogle(credentials));
         }
 
         [HttpPost("reset-password")]

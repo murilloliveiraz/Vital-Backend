@@ -127,6 +127,7 @@ namespace Application.Services.Classes
 
         public async Task<UsuarioLoginResponseContract> LoginWithGoogle(string credential)
         {
+            Console.WriteLine(_configuration["google:client_id"]);
             var settings = new GoogleJsonWebSignature.ValidationSettings()
             {
                 Audience = new List<string> { _configuration["google:client_id"] },
