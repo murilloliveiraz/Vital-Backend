@@ -42,7 +42,7 @@ namespace Application.Services.Classes
             var existingUser = await _userManager.FindByEmailAsync(model.Email);
             var user = _mapper.Map<Usuario>(model);
             user.UserName = model.Email;
-            user.DataCriacao = DateTime.UtcNow;
+            user.DataCriacao = DateTime.Now;
             if (existingUser != null)
             {
                 return existingUser;

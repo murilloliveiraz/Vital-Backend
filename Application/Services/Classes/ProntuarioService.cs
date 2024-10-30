@@ -42,7 +42,8 @@ namespace Application.Services.Classes
                 Tipo = "Criação",
                 Conteudo = new
                 {
-                   Observação = "Prontuário criado automaticamente ao registrar o paciente." 
+                   tipo = "Criação",
+                   observacao = "Prontuário criado automaticamente ao registrar o paciente." 
                 }
             };
 

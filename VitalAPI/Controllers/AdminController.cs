@@ -17,7 +17,7 @@ namespace VitalAPI.Controllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "AdminOnly")]
+        //[Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> Create(AdminRequestContract model)
         {
             var admin = await _adminService.Create(model);

@@ -158,7 +158,7 @@ static void ConfigurarServices(WebApplicationBuilder builder)
         options.AddPolicy("AdminOnly",
              policy => policy.RequireRole("Administrador"));
         options.AddPolicy("AdminOrMedico",
-             policy => policy.RequireRole("Administrator", "Medico"));
+             policy => policy.RequireRole("Administrador", "Medico"));
     });
 
     builder.Services.AddAuthentication(options => {

@@ -7,6 +7,10 @@ namespace Application.DTOS.Paciente
         public DateTime DataNascimento { get; set; }
         public DateTime DataCriacao { get; set; }
         public DateTime? DataInativacao { get; set; }
+        public bool? PCD { get; set; }
+        public string? Alergias { get; set; }
+        public string? Medicamentos { get; set; }
+        public string? HistoricoFamiliar { get; set; }
         public string Nome { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public int CriadoPorUsuarioId { get; set; }

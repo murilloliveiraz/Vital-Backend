@@ -20,7 +20,7 @@ namespace VitalAPI.Controllers
         }
 
         [HttpPost("register")]
-        //[Authorize(Policy = "AdminOnly")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> Create(UsuarioRequestContract model)
         {
             return Created("", await _userService.Register(model));
