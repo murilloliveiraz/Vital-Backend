@@ -3,6 +3,7 @@ using System;
 using Infraestructure.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infraestructure.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20241030185709_updatingProntuario")]
+    partial class updatingProntuario
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -259,20 +262,8 @@ namespace Infraestructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Alergias")
-                        .HasColumnType("VARCHAR");
-
                     b.Property<DateTime>("DataNascimento")
                         .HasColumnType("timestamp");
-
-                    b.Property<string>("HistoricoFamiliar")
-                        .HasColumnType("VARCHAR");
-
-                    b.Property<string>("Medicamentos")
-                        .HasColumnType("VARCHAR");
-
-                    b.Property<bool?>("PCD")
-                        .HasColumnType("Boolean");
 
                     b.Property<string>("Sexo")
                         .IsRequired()
@@ -298,8 +289,20 @@ namespace Infraestructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Alergias")
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("DataDeCriacao")
                         .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("HistoricoFamiliar")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Medicamentos")
+                        .HasColumnType("text");
+
+                    b.Property<bool?>("PCD")
+                        .HasColumnType("boolean");
 
                     b.Property<int>("PacienteId")
                         .HasColumnType("integer");

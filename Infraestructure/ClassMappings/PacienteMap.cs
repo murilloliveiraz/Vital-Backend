@@ -27,6 +27,18 @@ namespace Infraestructure.ClassMappings
                 .WithOne(c => c.Paciente)
                 .HasForeignKey(c => c.PacienteId);
 
+            builder.Property(p => p.Alergias)
+            .HasColumnType("VARCHAR");
+
+            builder.Property(p => p.PCD)
+            .HasColumnType("Boolean");
+
+            builder.Property(p => p.HistoricoFamiliar)
+            .HasColumnType("VARCHAR");
+
+            builder.Property(p => p.Medicamentos)
+            .HasColumnType("VARCHAR");
+
             builder.HasOne(p => p.Prontuario)
                .WithOne()
                .HasForeignKey<Prontuario>(p => p.PacienteId);
