@@ -27,6 +27,10 @@ namespace Infraestructure.ClassMappings
                 .WithOne(c => c.Medico)
                 .HasForeignKey(c => c.MedicoId);
 
+            builder.HasMany(m => m.Exames)
+                .WithOne(c => c.Medico)
+                .HasForeignKey(c => c.MedicoId);
+
             builder.HasOne(m => m.Hospital)
                 .WithMany(h => h.Medicos)
                 .HasForeignKey(m => m.HospitalId);

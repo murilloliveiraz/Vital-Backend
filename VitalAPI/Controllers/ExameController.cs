@@ -91,6 +91,22 @@ namespace VitalAPI.Controllers
             return Ok(examesAgendados);
         }
 
+        [HttpGet("medico/{id}/concluidos")]
+        [Authorize]
+        public async Task<IActionResult> GetAllDoctorExamsCompleted(int id)
+        {
+            var examesConcluidos = await _exameService.GetAllDoctorExamsCompleted(id);
+            return Ok(examesConcluidos);
+        }
+
+        [HttpGet("medico/{id}/agendados")]
+        [Authorize]
+        public async Task<IActionResult> GetAllDoctorExamsScheduled(int id)
+        {
+            var examesAgendados = await _exameService.GetAllDoctorExamsScheduled(id);
+            return Ok(examesAgendados);
+        }
+
         [HttpGet("agendados")]
         [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> GetAllScheduled()
@@ -109,6 +125,14 @@ namespace VitalAPI.Controllers
             }
 
             var result = await _exameService.Update(id, model);
+            return Ok(result);
+        }
+
+        [HttpPut("concluir/{id}")]
+        [Authorize(Policy = "AdminOnly")]
+        public async Task<IActionResult> SetExamAsCompleted(int id)
+        {
+            var result = await _exameService.SetExamAsCompleted(id);
             return Ok(result);
         }
 

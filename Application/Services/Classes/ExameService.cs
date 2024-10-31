@@ -6,6 +6,7 @@ using Domain;
 using Infraestructure.Repositories.Interfaces;
 using Infraestructure.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
+using static Google.Apis.Requests.BatchRequest;
 
 namespace Application.Services.Classes
 {
@@ -116,6 +117,34 @@ namespace Application.Services.Classes
             _mapper.Map(model, exame);
             await _exameRepository.Update(exame);
             return _mapper.Map<AgendarExameResponseContract>(exame);
+        }
+
+        public async Task<IEnumerable<AgendarExameResponseContract>?> GetAllDoctorExamsScheduled(int id)
+        {
+            var exames = await _exameRepository.GetAllDoctorAppointmentsScheduled(id);
+
+            var responseTasks = exames.Take(10).Select(async e =>
+            {
+                var paciente = await _pacienteService.GetById(e.PacienteId);
+                var response = _mapper.Map<AgendarExameResponseContract>(e);
+                response.PacienteNome = paciente.Nome;
+                return response;
+            });
+
+            return await Task.WhenAll(responseTasks);
+        }
+
+
+        public async Task<IEnumerable<ExameConcluidoResponse>?> GetAllDoctorExamsCompleted(int id)
+        {
+            var exames = await _exameRepository.GetAllDoctorAppointmentsCompleted(id);
+            return exames.Select(e => _mapper.Map<ExameConcluidoResponse>(e));
+        }
+
+        public async Task<ExameConcluidoResponse> SetExamAsCompleted(int id)
+        {
+            var exame = await _exameRepository.SetExamAsCompleted(id);
+            return _mapper.Map<ExameConcluidoResponse>(exame);
         }
     }
 }

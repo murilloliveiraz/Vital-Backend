@@ -31,7 +31,7 @@ namespace Infraestructure.ClassMappings
             .HasColumnType("VARCHAR");
 
             builder.Property(p => p.PCD)
-            .HasColumnType("Boolean");
+            .HasColumnType("VARCHAR");
 
             builder.Property(p => p.HistoricoFamiliar)
             .HasColumnType("VARCHAR");

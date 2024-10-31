@@ -3,6 +3,7 @@ using System;
 using Infraestructure.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infraestructure.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20241030222845_changingPCDColumnType")]
+    partial class changingPCDColumnType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -146,9 +149,6 @@ namespace Infraestructure.Migrations
                         .IsRequired()
                         .HasColumnType("VARCHAR");
 
-                    b.Property<int>("MedicoId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasColumnType("VARCHAR");
@@ -168,8 +168,6 @@ namespace Infraestructure.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("ExameId");
-
-                    b.HasIndex("MedicoId");
 
                     b.HasIndex("PacienteId");
 
@@ -601,19 +599,11 @@ namespace Infraestructure.Migrations
 
             modelBuilder.Entity("Domain.Exame", b =>
                 {
-                    b.HasOne("Domain.Medico", "Medico")
-                        .WithMany("Exames")
-                        .HasForeignKey("MedicoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Domain.Paciente", "Paciente")
                         .WithMany("Exames")
                         .HasForeignKey("PacienteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Medico");
 
                     b.Navigation("Paciente");
                 });
@@ -742,8 +732,6 @@ namespace Infraestructure.Migrations
             modelBuilder.Entity("Domain.Medico", b =>
                 {
                     b.Navigation("Consultas");
-
-                    b.Navigation("Exames");
                 });
 
             modelBuilder.Entity("Domain.Paciente", b =>

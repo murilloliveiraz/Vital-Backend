@@ -9,6 +9,8 @@
         public DateTime Data { get; set; }
         public int PacienteId { get; set; }
         public Paciente Paciente { get; set; }
+        public int MedicoId { get; set; }
+        public Medico Medico { get; set; }
         public string? S3KeyPath { get; set; }
         public string PrefixoDaPasta { get; set; }
         public string EmailParaReceberResultado { get; set; }

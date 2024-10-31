@@ -41,6 +41,20 @@ namespace Infraestructure.Repositories.Classes
            .ToListAsync();
         }
 
+        public async Task<IEnumerable<Exame>?> GetAllDoctorAppointmentsCompleted(int id)
+        {
+            return await _context.Exames.AsNoTracking().Where(e => e.MedicoId == id && e.Status == "Concluido")
+           .OrderByDescending(e => e.Data)
+           .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Exame>?> GetAllDoctorAppointmentsScheduled(int id)
+        {
+            return await _context.Exames.AsNoTracking().Where(e => e.MedicoId == id && e.Status == "Agendado")
+           .OrderByDescending(e => e.Data)
+           .ToListAsync();
+        }
+
         public async Task<IEnumerable<Exame>?> GetAllPatientExamsCompleted(int id)
         {
             return await _context.Exames.AsNoTracking().Where(e => e.PacienteId == id && e.Status == "Concluido")
@@ -65,6 +79,16 @@ namespace Infraestructure.Repositories.Classes
         public async Task<Exame?> GetById(int id)
         {
             return await _context.Exames.AsNoTracking().FirstOrDefaultAsync(e => e.ExameId == id);
+        }
+
+        public async Task<Exame> SetExamAsCompleted(int id)
+        {
+            Exame exameAtDatabase = await _context.Exames.FirstOrDefaultAsync(e => e.ExameId == id);
+
+            exameAtDatabase.Status = "Concluido";
+
+            await _context.SaveChangesAsync();
+            return exameAtDatabase;
         }
 
         public async Task<Exame> Update(Exame model)

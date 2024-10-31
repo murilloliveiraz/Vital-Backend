@@ -27,6 +27,10 @@ namespace Infraestructure.ClassMappings
                 .WithMany(p => p.Exames)
                 .HasForeignKey(e => e.PacienteId);
 
+            builder.HasOne(ex => ex.Medico)
+                .WithMany(m => m.Exames)
+                .HasForeignKey(e => e.MedicoId);
+
             builder.Property(ex => ex.EmailParaReceberResultado)
             .HasColumnType("VARCHAR")
             .IsRequired();

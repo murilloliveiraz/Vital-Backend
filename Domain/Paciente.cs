@@ -5,7 +5,7 @@
         public int Id { get; set; }
         public string UserId { get; set; }
         public string Sexo { get; set; }
-        public bool? PCD { get; set; }
+        public string? PCD { get; set; }
         public string? Alergias { get; set; }
         public string? Medicamentos { get; set; }
         public string? HistoricoFamiliar { get; set; }
