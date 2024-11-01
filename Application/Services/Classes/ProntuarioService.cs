@@ -5,6 +5,7 @@ using Domain;
 using Humanizer;
 using Infraestructure.Repositories.Interfaces;
 using MongoDB.Bson;
+using Newtonsoft.Json.Linq;
 using System.Text.Json;
 
 namespace Application.Services.Classes
@@ -58,7 +59,8 @@ namespace Application.Services.Classes
                 ProntuarioId = prontuarioId,
                 Tipo = conteudo.Tipo,
                 Data = DateTime.Now,
-                Conteudo = conteudo.Conteudo.ToBsonDocument()
+                Conteudo = (conteudo.Conteudo as JObject)?.ToObject<Dictionary<string, object>>().ToBsonDocument()
+                  ?? conteudo.Conteudo.ToBsonDocument()
             };
 
             await _registroRepository.CreateRecord(registro);

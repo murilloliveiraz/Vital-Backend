@@ -55,6 +55,12 @@ namespace Application.Services.Classes
             return _mapper.Map<MedicoResponseContract>(medico);
         }
 
+        public async Task<MedicoResponseContract?> GetByEmail(string email)
+        {
+            var paciente = await _medicoRepository.GetByEmail(email);
+            return _mapper.Map<MedicoResponseContract>(paciente);
+        }
+
         public async Task<MedicoResponseContract> GetById(int id)
         {
             var medico = await _medicoRepository.GetById(id);

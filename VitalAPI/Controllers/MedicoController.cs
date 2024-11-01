@@ -1,4 +1,5 @@
 using Application.DTOS.Medico;
+using Application.Services.Classes;
 using Application.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -44,6 +45,12 @@ namespace VitalAPI.Controllers
         public async Task<IActionResult> GetByCRM(string crm)
         {
             return Ok(await _medicoService.GetByCRM(crm));
+        }
+
+        [HttpGet("pesquisar/email")]
+        public async Task<IActionResult> GetByEmail(string email)
+        {
+            return Ok(await _medicoService.GetByEmail(email));
         }
 
         [HttpGet("pesquisar/especializacao")]

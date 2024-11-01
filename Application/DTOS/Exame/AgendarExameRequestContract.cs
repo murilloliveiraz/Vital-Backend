@@ -8,5 +8,7 @@
         public int PacienteId { get; set; }
         public int MedicoId { get; set; }
         public string EmailParaReceberResultado { get; set; }
+        public string ObservacoesDaClinica { get; set; }
+        public string QueixasDoPaciente { get; set; }
     }
 }
