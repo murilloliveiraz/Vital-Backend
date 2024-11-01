@@ -58,7 +58,7 @@ namespace Application.Services.Classes
                 ProntuarioId = prontuarioId,
                 Tipo = conteudo.Tipo,
                 Data = DateTime.Now,
-                Conteudo = BsonDocument.Parse(JsonSerializer.Serialize(conteudo.Conteudo))
+                Conteudo = conteudo.Conteudo.ToBsonDocument()
             };
 
             await _registroRepository.CreateRecord(registro);

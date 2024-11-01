@@ -14,5 +14,7 @@
         public string? S3KeyPath { get; set; }
         public string PrefixoDaPasta { get; set; }
         public string EmailParaReceberResultado { get; set; }
+        public string ObservacoesDaClinica { get; set; }
+        public string QueixasDoPaciente { get; set; }
     }
 }
