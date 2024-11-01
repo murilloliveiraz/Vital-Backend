@@ -129,7 +129,7 @@ namespace VitalAPI.Controllers
         }
 
         [HttpPut("concluir/{id}")]
-        [Authorize(Policy = "AdminOnly")]
+        [Authorize(Policy = "AdminOrMedico")]
         public async Task<IActionResult> SetExamAsCompleted(int id)
         {
             var result = await _exameService.SetExamAsCompleted(id);
