@@ -38,10 +38,6 @@ namespace Infraestructure.ClassMappings
 
             builder.Property(p => p.Medicamentos)
             .HasColumnType("VARCHAR");
-
-            builder.HasOne(p => p.Prontuario)
-               .WithOne()
-               .HasForeignKey<Prontuario>(p => p.PacienteId);
         }
     }
 }

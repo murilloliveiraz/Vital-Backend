@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infraestructure.Migrations
 {
     /// <inheritdoc />
-    public partial class creatingDataseAndtables : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -34,8 +34,8 @@ namespace Infraestructure.Migrations
                     Nome = table.Column<string>(type: "text", nullable: false),
                     CPF = table.Column<string>(type: "text", nullable: false),
                     Role = table.Column<string>(type: "text", nullable: false),
-                    DataCriacao = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    DataInativacao = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DataCriacao = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    DataInativacao = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CriadoPorUsuarioId = table.Column<int>(type: "integer", nullable: false),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -61,16 +61,17 @@ namespace Infraestructure.Migrations
                 name: "hospitais",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
+                    HospitalId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Nome = table.Column<string>(type: "VARCHAR", nullable: false),
                     Endereco = table.Column<string>(type: "VARCHAR", nullable: false),
+                    Estado = table.Column<string>(type: "VARCHAR", nullable: false),
                     Telefone = table.Column<string>(type: "VARCHAR", nullable: false),
-                    DataInativacao = table.Column<DateTime>(type: "timestamp", nullable: false)
+                    DataInativacao = table.Column<DateTime>(type: "timestamp", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_hospitais", x => x.Id);
+                    table.PrimaryKey("PK_hospitais", x => x.HospitalId);
                 });
 
             migrationBuilder.CreateTable(
@@ -81,7 +82,7 @@ namespace Infraestructure.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Nome = table.Column<string>(type: "VARCHAR", nullable: false),
                     Descricao = table.Column<string>(type: "VARCHAR", nullable: false),
-                    DataInativacao = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                    DataInativacao = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -221,6 +222,11 @@ namespace Infraestructure.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<string>(type: "text", nullable: false),
+                    Sexo = table.Column<string>(type: "text", nullable: false),
+                    PCD = table.Column<string>(type: "VARCHAR", nullable: true),
+                    Alergias = table.Column<string>(type: "VARCHAR", nullable: true),
+                    Medicamentos = table.Column<string>(type: "VARCHAR", nullable: true),
+                    HistoricoFamiliar = table.Column<string>(type: "VARCHAR", nullable: true),
                     DataNascimento = table.Column<DateTime>(type: "timestamp", nullable: false)
                 },
                 constraints: table =>
@@ -258,7 +264,7 @@ namespace Infraestructure.Migrations
                         name: "FK_medicos_hospitais_HospitalId",
                         column: x => x.HospitalId,
                         principalTable: "hospitais",
-                        principalColumn: "Id",
+                        principalColumn: "HospitalId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -276,13 +282,69 @@ namespace Infraestructure.Migrations
                         name: "FK_hospitalservico_hospitais_HospitalId",
                         column: x => x.HospitalId,
                         principalTable: "hospitais",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "HospitalId",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_hospitalservico_servicos_ServicoId",
                         column: x => x.ServicoId,
                         principalTable: "servicos",
                         principalColumn: "ServicoId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Prontuarios",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    PacienteId = table.Column<int>(type: "integer", nullable: false),
+                    DataDeCriacao = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Prontuarios", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Prontuarios_pacientes_PacienteId",
+                        column: x => x.PacienteId,
+                        principalTable: "pacientes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "consultas",
+                columns: table => new
+                {
+                    ConsultaId = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Nome = table.Column<string>(type: "VARCHAR", nullable: false),
+                    Status = table.Column<string>(type: "VARCHAR", nullable: false),
+                    ValorConsulta = table.Column<string>(type: "VARCHAR", nullable: true),
+                    StatusPagamento = table.Column<string>(type: "VARCHAR", nullable: true),
+                    TipoConsulta = table.Column<string>(type: "VARCHAR", nullable: false),
+                    Local = table.Column<string>(type: "VARCHAR", nullable: false),
+                    MeetLink = table.Column<string>(type: "VARCHAR", nullable: true),
+                    Data = table.Column<DateTime>(type: "timestamp", nullable: false),
+                    PacienteId = table.Column<int>(type: "integer", nullable: false),
+                    MedicoId = table.Column<int>(type: "integer", nullable: false),
+                    PrefixoDaPasta = table.Column<string>(type: "VARCHAR", nullable: false),
+                    EmailParaReceberNotificacoes = table.Column<string>(type: "VARCHAR", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_consultas", x => x.ConsultaId);
+                    table.ForeignKey(
+                        name: "FK_consultas_medicos_MedicoId",
+                        column: x => x.MedicoId,
+                        principalTable: "medicos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_consultas_pacientes_PacienteId",
+                        column: x => x.PacienteId,
+                        principalTable: "pacientes",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -293,21 +355,51 @@ namespace Infraestructure.Migrations
                     ExameId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Nome = table.Column<string>(type: "VARCHAR", nullable: false),
+                    Status = table.Column<string>(type: "text", nullable: false),
                     Local = table.Column<string>(type: "VARCHAR", nullable: false),
                     Data = table.Column<DateTime>(type: "timestamp", nullable: false),
                     PacienteId = table.Column<int>(type: "integer", nullable: false),
-                    CaminhoResultado = table.Column<string>(type: "VARCHAR", nullable: false),
-                    ArquivoResultadoUrl = table.Column<string>(type: "VARCHAR", nullable: false),
-                    EmailParaReceberResultado = table.Column<string>(type: "VARCHAR", nullable: false)
+                    MedicoId = table.Column<int>(type: "integer", nullable: false),
+                    S3KeyPath = table.Column<string>(type: "VARCHAR", nullable: true),
+                    PrefixoDaPasta = table.Column<string>(type: "VARCHAR", nullable: false),
+                    EmailParaReceberResultado = table.Column<string>(type: "VARCHAR", nullable: false),
+                    QueixasDoPaciente = table.Column<string>(type: "VARCHAR", nullable: true),
+                    ObservacoesDaClinica = table.Column<string>(type: "VARCHAR", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_exames", x => x.ExameId);
                     table.ForeignKey(
+                        name: "FK_exames_medicos_MedicoId",
+                        column: x => x.MedicoId,
+                        principalTable: "medicos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_exames_pacientes_PacienteId",
                         column: x => x.PacienteId,
                         principalTable: "pacientes",
                         principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "documentos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ConsultaId = table.Column<int>(type: "integer", nullable: false),
+                    S3KeyPath = table.Column<string>(type: "VARCHAR", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_documentos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_documentos_consultas_ConsultaId",
+                        column: x => x.ConsultaId,
+                        principalTable: "consultas",
+                        principalColumn: "ConsultaId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -355,6 +447,26 @@ namespace Infraestructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_consultas_MedicoId",
+                table: "consultas",
+                column: "MedicoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_consultas_PacienteId",
+                table: "consultas",
+                column: "PacienteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_documentos_ConsultaId",
+                table: "documentos",
+                column: "ConsultaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_exames_MedicoId",
+                table: "exames",
+                column: "MedicoId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_exames_PacienteId",
                 table: "exames",
                 column: "PacienteId");
@@ -380,6 +492,12 @@ namespace Infraestructure.Migrations
                 table: "pacientes",
                 column: "UserId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Prontuarios_PacienteId",
+                table: "Prontuarios",
+                column: "PacienteId",
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -404,22 +522,31 @@ namespace Infraestructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "documentos");
+
+            migrationBuilder.DropTable(
                 name: "exames");
 
             migrationBuilder.DropTable(
                 name: "hospitalservico");
 
             migrationBuilder.DropTable(
-                name: "medicos");
+                name: "Prontuarios");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "pacientes");
+                name: "consultas");
 
             migrationBuilder.DropTable(
                 name: "servicos");
+
+            migrationBuilder.DropTable(
+                name: "medicos");
+
+            migrationBuilder.DropTable(
+                name: "pacientes");
 
             migrationBuilder.DropTable(
                 name: "hospitais");

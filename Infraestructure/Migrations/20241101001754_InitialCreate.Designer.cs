@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infraestructure.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20241030185709_updatingProntuario")]
-    partial class updatingProntuario
+    [Migration("20241101001754_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -149,8 +149,14 @@ namespace Infraestructure.Migrations
                         .IsRequired()
                         .HasColumnType("VARCHAR");
 
+                    b.Property<int>("MedicoId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Nome")
                         .IsRequired()
+                        .HasColumnType("VARCHAR");
+
+                    b.Property<string>("ObservacoesDaClinica")
                         .HasColumnType("VARCHAR");
 
                     b.Property<int>("PacienteId")
@@ -158,6 +164,9 @@ namespace Infraestructure.Migrations
 
                     b.Property<string>("PrefixoDaPasta")
                         .IsRequired()
+                        .HasColumnType("VARCHAR");
+
+                    b.Property<string>("QueixasDoPaciente")
                         .HasColumnType("VARCHAR");
 
                     b.Property<string>("S3KeyPath")
@@ -168,6 +177,8 @@ namespace Infraestructure.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("ExameId");
+
+                    b.HasIndex("MedicoId");
 
                     b.HasIndex("PacienteId");
 
@@ -262,8 +273,20 @@ namespace Infraestructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Alergias")
+                        .HasColumnType("VARCHAR");
+
                     b.Property<DateTime>("DataNascimento")
                         .HasColumnType("timestamp");
+
+                    b.Property<string>("HistoricoFamiliar")
+                        .HasColumnType("VARCHAR");
+
+                    b.Property<string>("Medicamentos")
+                        .HasColumnType("VARCHAR");
+
+                    b.Property<string>("PCD")
+                        .HasColumnType("VARCHAR");
 
                     b.Property<string>("Sexo")
                         .IsRequired()
@@ -289,20 +312,8 @@ namespace Infraestructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Alergias")
-                        .HasColumnType("text");
-
                     b.Property<DateTime>("DataDeCriacao")
                         .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("HistoricoFamiliar")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Medicamentos")
-                        .HasColumnType("text");
-
-                    b.Property<bool?>("PCD")
-                        .HasColumnType("boolean");
 
                     b.Property<int>("PacienteId")
                         .HasColumnType("integer");
@@ -599,11 +610,19 @@ namespace Infraestructure.Migrations
 
             modelBuilder.Entity("Domain.Exame", b =>
                 {
+                    b.HasOne("Domain.Medico", "Medico")
+                        .WithMany("Exames")
+                        .HasForeignKey("MedicoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Domain.Paciente", "Paciente")
                         .WithMany("Exames")
                         .HasForeignKey("PacienteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Medico");
 
                     b.Navigation("Paciente");
                 });
@@ -732,6 +751,8 @@ namespace Infraestructure.Migrations
             modelBuilder.Entity("Domain.Medico", b =>
                 {
                     b.Navigation("Consultas");
+
+                    b.Navigation("Exames");
                 });
 
             modelBuilder.Entity("Domain.Paciente", b =>

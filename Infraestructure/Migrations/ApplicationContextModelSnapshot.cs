@@ -153,11 +153,17 @@ namespace Infraestructure.Migrations
                         .IsRequired()
                         .HasColumnType("VARCHAR");
 
+                    b.Property<string>("ObservacoesDaClinica")
+                        .HasColumnType("VARCHAR");
+
                     b.Property<int>("PacienteId")
                         .HasColumnType("integer");
 
                     b.Property<string>("PrefixoDaPasta")
                         .IsRequired()
+                        .HasColumnType("VARCHAR");
+
+                    b.Property<string>("QueixasDoPaciente")
                         .HasColumnType("VARCHAR");
 
                     b.Property<string>("S3KeyPath")

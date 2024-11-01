@@ -39,6 +39,11 @@ namespace Infraestructure.Repositories.Classes
            .ToListAsync();
         }
 
+        public async Task<Medico?> GetByEmail(string email)
+        {
+            return await _context.Medicos.AsNoTracking().Include(p => p.Usuario).FirstOrDefaultAsync(p => p.Usuario.Email == email);
+        }
+
         public async Task<Medico?> GetByCRM(string crm)
         {
             return await _context.Medicos.AsNoTracking().Include(m => m.Usuario).FirstOrDefaultAsync(m => m.CRM == crm);

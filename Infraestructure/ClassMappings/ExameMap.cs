@@ -40,6 +40,12 @@ namespace Infraestructure.ClassMappings
 
             builder.Property(ex => ex.PrefixoDaPasta)
             .HasColumnType("VARCHAR");
+            
+            builder.Property(ex => ex.ObservacoesDaClinica)
+            .HasColumnType("VARCHAR");
+
+            builder.Property(ex => ex.QueixasDoPaciente)
+            .HasColumnType("VARCHAR");
         }
     }
 }
