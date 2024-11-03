@@ -78,12 +78,12 @@ namespace Infraestructure.Repositories.Classes
 
         public async Task<Exame?> GetById(int id)
         {
-            return await _context.Exames.AsNoTracking().FirstOrDefaultAsync(e => e.ExameId == id);
+            return await _context.Exames.AsNoTracking().FirstOrDefaultAsync(e => e.Id == id);
         }
 
         public async Task<Exame> SetExamAsCompleted(int id)
         {
-            Exame exameAtDatabase = await _context.Exames.FirstOrDefaultAsync(e => e.ExameId == id);
+            Exame exameAtDatabase = await _context.Exames.FirstOrDefaultAsync(e => e.Id == id);
 
             exameAtDatabase.Status = "Concluido";
 
@@ -93,7 +93,7 @@ namespace Infraestructure.Repositories.Classes
 
         public async Task<Exame> Update(Exame model)
         {
-            Exame exameAtDatabase = await _context.Exames.FirstOrDefaultAsync(e => e.ExameId == model.ExameId);
+            Exame exameAtDatabase = await _context.Exames.FirstOrDefaultAsync(e => e.Id == model.Id);
 
             _context.Entry(exameAtDatabase).CurrentValues.SetValues(model);
 

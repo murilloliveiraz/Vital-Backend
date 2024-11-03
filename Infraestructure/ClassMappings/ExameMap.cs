@@ -9,7 +9,7 @@ namespace Infraestructure.ClassMappings
         public void Configure(EntityTypeBuilder<Exame> builder)
         {
             builder.ToTable("exames")
-            .HasKey(ex => ex.ExameId);
+            .HasKey(ex => ex.Id);
 
             builder.Property(ex => ex.Nome)
             .HasColumnType("VARCHAR")

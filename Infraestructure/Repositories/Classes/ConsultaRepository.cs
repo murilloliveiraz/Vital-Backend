@@ -79,12 +79,12 @@ namespace Infraestructure.Repositories.Classes
 
         public async Task<Consulta?> GetById(int id)
         {
-            return await _context.Consultas.AsNoTracking().FirstOrDefaultAsync(e => e.ConsultaId == id);
+            return await _context.Consultas.AsNoTracking().FirstOrDefaultAsync(e => e.Id == id);
         }
 
         public async Task<Consulta> Update(Consulta model)
         {
-            Consulta appointmentAtDatabase = await _context.Consultas.FirstOrDefaultAsync(e => e.ConsultaId == model.ConsultaId);
+            Consulta appointmentAtDatabase = await _context.Consultas.FirstOrDefaultAsync(e => e.Id == model.Id);
 
             _context.Entry(appointmentAtDatabase).CurrentValues.SetValues(model);
 

@@ -9,7 +9,7 @@ namespace Infraestructure.ClassMappings
         public void Configure(EntityTypeBuilder<Consulta> builder)
         {
             builder.ToTable("consultas")
-      .HasKey(cst => cst.ConsultaId);
+      .HasKey(cst => cst.Id);
 
             builder.Property(ex => ex.Nome)
             .HasColumnType("VARCHAR")

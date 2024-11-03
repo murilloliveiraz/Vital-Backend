@@ -4,7 +4,7 @@ namespace Application.DTOS.Consulta
 {
     public class ConsultaConcluidaResponse
     {
-        public int ConsultaId { get; set; }
+        public int Id { get; set; }
         public string Nome { get; set; }
         public decimal? ValorConsulta { get; set; }
         public string? Local { get; set; }

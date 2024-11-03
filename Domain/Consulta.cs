@@ -2,7 +2,7 @@
 {
     public class Consulta
     {
-        public int ConsultaId { get; set; }
+        public int Id { get; set; }
         public string Nome { get; set; }
         public string Status { get; set; }
         public decimal? ValorConsulta { get; set; }

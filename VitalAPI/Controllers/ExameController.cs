@@ -26,7 +26,7 @@ namespace VitalAPI.Controllers
             }
 
             var exame = await _exameService.Create(model);
-            return CreatedAtAction(nameof(GetById), new { id = exame.ExameId }, exame);
+            return CreatedAtAction(nameof(GetById), new { id = exame.Id }, exame);
         }
 
         [HttpPost("{id}/anexar-resultado")]

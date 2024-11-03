@@ -102,7 +102,18 @@ namespace Application.Services.Classes
         public async Task<IEnumerable<AgendarExameResponseContract>?> GetAllScheduled()
         {
             var exames = await _exameRepository.GetAllScheduled();
-            return exames.Select(e => _mapper.Map<AgendarExameResponseContract>(e)); 
+
+            var responses = new List<AgendarExameResponseContract>();
+
+            foreach (var exame in exames.Take(10))
+            {
+                var paciente = await _pacienteService.GetById(exame.PacienteId);
+                var response = _mapper.Map<AgendarExameResponseContract>(exame);
+                response.PacienteNome = paciente?.Nome;
+                responses.Add(response);
+            }
+
+            return responses;
         }
 
         public async Task<AgendarExameResponseContract> GetById(int id)
@@ -123,15 +134,17 @@ namespace Application.Services.Classes
         {
             var exames = await _exameRepository.GetAllDoctorAppointmentsScheduled(id);
 
-            var responseTasks = exames.Take(10).Select(async e =>
-            {
-                var paciente = await _pacienteService.GetById(e.PacienteId);
-                var response = _mapper.Map<AgendarExameResponseContract>(e);
-                response.PacienteNome = paciente.Nome;
-                return response;
-            });
+            var responses = new List<AgendarExameResponseContract>();
 
-            return await Task.WhenAll(responseTasks);
+            foreach (var exame in exames.Take(10))
+            {
+                var paciente = await _pacienteService.GetById(exame.PacienteId);
+                var response = _mapper.Map<AgendarExameResponseContract>(exame);
+                response.PacienteNome = paciente?.Nome;
+                responses.Add(response);
+            }
+
+            return responses;
         }
 
 
