@@ -79,6 +79,7 @@ static void ConfigurarInjecaoDeDependencia(WebApplicationBuilder builder)
         configs.AddProfile<AdminProfile>();
         configs.AddProfile<ProntuarioProfile>();
         configs.AddProfile<ExameProfile>();
+        configs.AddProfile<ConsultaProfile>();
         configs.AddProfile<HospitalServicoProfile>();
     });
 
@@ -90,6 +91,7 @@ static void ConfigurarInjecaoDeDependencia(WebApplicationBuilder builder)
     .AddSingleton(builder.Configuration)
     .AddSingleton(builder.Environment)
     .AddSingleton(mapper)
+    .AddHttpClient()
     .AddScoped<IEmailService, EmailService>()
     .AddScoped<TokenJWTService>()
     .AddScoped<IS3StorageService, S3StorageService>()
@@ -110,7 +112,12 @@ static void ConfigurarInjecaoDeDependencia(WebApplicationBuilder builder)
     .AddScoped<IAdminRepository, AdminRepository>()
     .AddScoped<IAdminService, AdminService>()
     .AddScoped<IExameRepository, ExameRepository>()
-    .AddScoped<IExameService, ExameService>();
+    .AddScoped<IExameService, ExameService>()
+    .AddScoped<IConsultaRepository, ConsultaRepository>()
+    .AddScoped<IConsultaService, ConsultaService>()
+    .AddScoped<IDocumentoRepository, DocumentoRepository>()
+    .AddScoped<IDocumentoService, DocumentoService>()
+    .AddScoped<IGoogleMeetService, GoogleMeetService>();
 }
 
 // Configura o servi�os da API.

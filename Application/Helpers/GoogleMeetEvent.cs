@@ -23,7 +23,7 @@ namespace Application.Helpers
             }
         }
 
-        public class EventDateTime
+        public class EventDateTimeDTO
         {
             public DateTime DateTime { get; set; }
             public string TimeZone { get; set; }

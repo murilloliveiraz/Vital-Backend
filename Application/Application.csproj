@@ -21,4 +21,8 @@
      <ProjectReference Include="..\Domain\Domain.csproj" />
      <ProjectReference Include="..\Infraestructure\Infraestructure.csproj" />
    </ItemGroup>
+
+   <ItemGroup>
+     <Folder Include="CalendarAuthToken\" />
+   </ItemGroup>
 </Project>
