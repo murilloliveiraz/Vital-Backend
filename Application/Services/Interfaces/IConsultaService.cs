@@ -9,6 +9,7 @@ namespace Application.Services.Interfaces
         Task<IEnumerable<AgendarConsultaResponseContract>?> GetAllScheduled();
         Task<AgendarConsultaResponseContract> CreateRemoteAppointment(AgendarConsultaRequestContract model);
         Task<IEnumerable<ConsultaConcluidaResponse>?> GetAllCompleted();
+        Task<ConsultaConcluidaResponse> SetAppointmentAsCompleted(int id);
         Task<IEnumerable<AgendarConsultaResponseContract>?> GetAllPatientAppointmentsScheduled(int id);
         Task<IEnumerable<ConsultaConcluidaResponse>?> GetAllPatientAppointmentsCompleted(int id);
         Task<IEnumerable<AgendarConsultaResponseContract>?> GetAllDoctorAppointmentsScheduled(int id);

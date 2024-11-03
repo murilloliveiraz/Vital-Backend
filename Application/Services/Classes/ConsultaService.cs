@@ -6,6 +6,8 @@ using Domain;
 using Infraestructure.Repositories.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Google.Apis.Calendar.v3.Data;
+using Application.DTOS.Exame;
+using Infraestructure.Repositories.Classes;
 
 namespace Application.Services.Classes
 {
@@ -40,6 +42,7 @@ namespace Application.Services.Classes
                 throw new Exception("Paciente n�o encontrado.");
             }
             Consulta consulta = _mapper.Map<Consulta>(model);
+            consulta.TipoConsulta = "Presencial";
             string dataFormatada = consulta.Data.ToString("yyyyMMdd");
             consulta.PrefixoDaPasta = $"{paciente.CPF}/{dataFormatada}";
 
@@ -60,9 +63,10 @@ namespace Application.Services.Classes
             var medico = await _medicoService.GetById(model.MedicoId);
             if (paciente == null || medico == null)
             {
-                throw new Exception("Paciente nou medico não encontrado.");
+                throw new Exception("Paciente ou medico não encontrado.");
             }
             Consulta consulta = _mapper.Map<Consulta>(model);
+            consulta.TipoConsulta = "Remota";
             string dataFormatada = consulta.Data.ToString("yyyyMMdd");
             consulta.PrefixoDaPasta = $"{paciente.CPF}/{dataFormatada}";
 
@@ -79,55 +83,72 @@ namespace Application.Services.Classes
             return _mapper.Map<AgendarConsultaResponseContract>(consulta);
         }
 
-        public Task Delete(int id)
+        public async Task<ConsultaConcluidaResponse> SetAppointmentAsCompleted(int id)
         {
-            throw new NotImplementedException();
+            var exame = await _consultaRepository.SetAppointmentAsCompleted(id);
+            return _mapper.Map<ConsultaConcluidaResponse>(exame);
         }
 
-        public Task<IEnumerable<AgendarConsultaResponseContract>> Get()
+        public async Task Delete(int id)
         {
-            throw new NotImplementedException();
+            var consulta = await _consultaRepository.GetById(id);
+            await _consultaRepository.Delete(_mapper.Map<Consulta>(consulta));
         }
 
-        public Task<IEnumerable<ConsultaConcluidaResponse>?> GetAllCompleted()
+        public async Task<IEnumerable<AgendarConsultaResponseContract>> Get()
         {
-            throw new NotImplementedException();
+            var consultas = await _consultaRepository.Get();
+            return consultas.Select(e => _mapper.Map<AgendarConsultaResponseContract>(e));
         }
 
-        public Task<IEnumerable<ConsultaConcluidaResponse>?> GetAllDoctorAppointmentsCompleted(int id)
+        public async Task<IEnumerable<ConsultaConcluidaResponse>?> GetAllCompleted()
         {
-            throw new NotImplementedException();
+            var consultas = await _consultaRepository.GetAllCompleted();
+            return consultas.Select(e => _mapper.Map<ConsultaConcluidaResponse>(e));
         }
 
-        public Task<IEnumerable<AgendarConsultaResponseContract>?> GetAllDoctorAppointmentsScheduled(int id)
+        public async Task<IEnumerable<ConsultaConcluidaResponse>?> GetAllDoctorAppointmentsCompleted(int id)
         {
-            throw new NotImplementedException();
+            var consultas = await _consultaRepository.GetAllDoctorAppointmentsCompleted(id);
+            return consultas.Select(e => _mapper.Map<ConsultaConcluidaResponse>(e));
         }
 
-        public Task<IEnumerable<ConsultaConcluidaResponse>?> GetAllPatientAppointmentsCompleted(int id)
+        public async Task<IEnumerable<AgendarConsultaResponseContract>?> GetAllDoctorAppointmentsScheduled(int id)
         {
-            throw new NotImplementedException();
+            var consultas = await _consultaRepository.GetAllDoctorAppointmentsScheduled(id);
+            return consultas.Select(e => _mapper.Map<AgendarConsultaResponseContract>(e));
         }
 
-        public Task<IEnumerable<AgendarConsultaResponseContract>?> GetAllPatientAppointmentsScheduled(int id)
+        public async Task<IEnumerable<ConsultaConcluidaResponse>?> GetAllPatientAppointmentsCompleted(int id)
         {
-            throw new NotImplementedException();
+            var consultas = await _consultaRepository.GetAllPatientAppointmentsCompleted(id);
+            return consultas.Select(e => _mapper.Map<ConsultaConcluidaResponse>(e));
         }
 
-        public Task<IEnumerable<AgendarConsultaResponseContract>?> GetAllScheduled()
+        public async Task<IEnumerable<AgendarConsultaResponseContract>?> GetAllPatientAppointmentsScheduled(int id)
         {
-            throw new NotImplementedException();
+            var consultas = await _consultaRepository.GetAllPatientAppointmentsScheduled(id);
+            return consultas.Select(e => _mapper.Map<AgendarConsultaResponseContract>(e));
+        }
+
+        public async Task<IEnumerable<AgendarConsultaResponseContract>?> GetAllScheduled()
+        {
+            var consultas = await _consultaRepository.GetAllScheduled();
+            return consultas.Select(e => _mapper.Map<AgendarConsultaResponseContract>(e));
         }
 
         public async Task<AgendarConsultaResponseContract> GetById(int id)
         {
-            var exame = await _consultaRepository.GetById(id);
-            return _mapper.Map<AgendarConsultaResponseContract>(exame);
+            var consulta = await _consultaRepository.GetById(id);
+            return _mapper.Map<AgendarConsultaResponseContract>(consulta);
         }
 
-        public Task<AgendarConsultaResponseContract> Update(int id, AgendarConsultaRequestContract model)
+        public async Task<AgendarConsultaResponseContract> Update(int id, AgendarConsultaRequestContract model)
         {
-            throw new NotImplementedException();
+            var consulta = await _consultaRepository.GetById(id);
+            _mapper.Map(model, consulta);
+            await _consultaRepository.Update(consulta);
+            return _mapper.Map<AgendarConsultaResponseContract>(consulta);
         }
     }
 }

@@ -28,6 +28,16 @@ namespace Infraestructure.Repositories.Classes
             await Update(model);
         }
 
+        public async Task<Consulta> SetAppointmentAsCompleted(int id)
+        {
+            Consulta consultaAtDatabase = await _context.Consultas.FirstOrDefaultAsync(e => e.Id == id);
+
+            consultaAtDatabase.Status = "Concluido";
+
+            await _context.SaveChangesAsync();
+            return consultaAtDatabase;
+        }
+
         public async Task<IEnumerable<Consulta?>> Get()
         {
             return await _context.Consultas.AsNoTracking()
