@@ -28,6 +28,10 @@ namespace Infraestructure.ClassMappings
             builder.Property(ex => ex.TipoConsulta)
             .HasColumnType("VARCHAR")
             .IsRequired();
+            
+            builder.Property(ex => ex.QueixasDoPaciente)
+            .HasColumnType("VARCHAR")
+            .IsRequired();
 
             builder.Property(ex => ex.Local)
             .HasColumnType("VARCHAR")

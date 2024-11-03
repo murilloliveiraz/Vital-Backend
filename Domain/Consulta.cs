@@ -9,6 +9,7 @@
         public string? StatusPagamento { get; set; }
         public string TipoConsulta { get; set; }
         public string? Local { get; set; }
+        public string QueixasDoPaciente { get; set; }
         public string? MeetLink { get; set; }
         public DateTime Data { get; set; }
         public int PacienteId { get; set; }

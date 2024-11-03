@@ -17,7 +17,7 @@ namespace VitalAPI.Controllers
         }
 
         [HttpPost("agendar")]
-        [Authorize(Policy = "AdminOnly")]
+        [Authorize]
         public async Task<IActionResult> Create(AgendarConsultaRequestContract model)
         {
             if (!ModelState.IsValid)
@@ -30,7 +30,7 @@ namespace VitalAPI.Controllers
         }
 
         [HttpPost("agendar-remota")]
-        [Authorize(Policy = "AdminOnly")]
+        [Authorize]
         public async Task<IActionResult> CreateRemote(AgendarConsultaRequestContract model)
         {
             if (!ModelState.IsValid)

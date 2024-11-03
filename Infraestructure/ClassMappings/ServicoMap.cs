@@ -15,12 +15,21 @@ namespace Infraestructure.ClassMappings
             .HasColumnType("VARCHAR")
             .IsRequired();
 
+            builder.Property(s => s.Especializacao)
+            .HasColumnType("VARCHAR")
+            .IsRequired();
+            
+            builder.Property(s => s.Valor)
+            .HasColumnType("DECIMAL")
+            .IsRequired();
+
             builder.Property(s => s.Descricao)
             .HasColumnType("VARCHAR");
 
             builder.HasMany(s => s.Hospitais)
                 .WithOne(h => h.Servico)
                 .HasForeignKey(h => h.ServicoId);
+
         }
     }
 }
