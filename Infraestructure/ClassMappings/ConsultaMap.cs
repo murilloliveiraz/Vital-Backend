@@ -24,6 +24,9 @@ namespace Infraestructure.ClassMappings
 
             builder.Property(ex => ex.StatusPagamento)
             .HasColumnType("VARCHAR");
+            
+            builder.Property(ex => ex.PagamentoId)
+            .HasColumnType("INTEGER");
 
             builder.Property(ex => ex.TipoConsulta)
             .HasColumnType("VARCHAR")

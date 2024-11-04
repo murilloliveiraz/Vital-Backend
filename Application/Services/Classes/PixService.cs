@@ -4,11 +4,19 @@ using MercadoPago.Client.Common;
 using MercadoPago.Client.Payment;
 using MercadoPago.Client;
 using MercadoPago.Resource.Payment;
+using Microsoft.Extensions.Configuration;
 
 namespace Application.Services.Classes
 {
     public class PixService : IPixService
     {
+        private IConfiguration _configuration;
+
+        public PixService(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         public async Task<Payment> CobrarComPix(PixPayment paymentRequest)
         {
             var requestOptions = new RequestOptions();
@@ -16,25 +24,26 @@ namespace Application.Services.Classes
             requestOptions.CustomHeaders.Add("x-idempotency-key", idempotencyKey);
             var request = new PaymentCreateRequest
             {
-                TransactionAmount = paymentRequest.Valor,
-                Description = paymentRequest.Servico,
+                TransactionAmount = paymentRequest.ValorConsulta,
+                Description = paymentRequest.NomeServico,
                 PaymentMethodId = "pix",
                 Payer = new PaymentPayerRequest
                 {
-                    Email = paymentRequest.Email,
-                    FirstName = paymentRequest.Nome,
-                    LastName = paymentRequest.Sobrenome,
+                    Email = paymentRequest.EmailPagador,
+                    FirstName = paymentRequest.NomePagador,
+                    LastName = paymentRequest.SobrenomePagador,
                     Identification = new IdentificationRequest
                     {
                         Type = "CPF",
-                        Number = paymentRequest.CPF,
+                        Number = paymentRequest.CPFPagador,
                     },
                 },
-                NotificationUrl = paymentRequest.NotificationURL
+                NotificationUrl = _configuration["Ngrok:NotificationUrl"]
             };
 
             var client = new PaymentClient();
             Payment payment = await client.CreateAsync(request, requestOptions);
+            Console.WriteLine(payment);
             return payment;
         }
     }

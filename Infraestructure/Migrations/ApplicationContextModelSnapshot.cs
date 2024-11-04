@@ -78,6 +78,9 @@ namespace Infraestructure.Migrations
                     b.Property<int>("PacienteId")
                         .HasColumnType("integer");
 
+                    b.Property<int>("PagamentoId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("PrefixoDaPasta")
                         .IsRequired()
                         .HasColumnType("VARCHAR");

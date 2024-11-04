@@ -101,5 +101,30 @@ namespace Infraestructure.Repositories.Classes
             await _context.SaveChangesAsync();
             return appointmentAtDatabase;
         }
+
+        public async Task<Consulta> UpdatePaymentStatus(int id, string status)
+        {
+            Consulta consultaAtDatabase = await _context.Consultas.FirstOrDefaultAsync(e => e.Id == id);
+
+            consultaAtDatabase.StatusPagamento = status;
+
+            await _context.SaveChangesAsync();
+            return consultaAtDatabase;
+        }
+
+        public async Task<Consulta> GetByPaymentId(int id)
+        {
+            return await _context.Consultas.AsNoTracking().FirstOrDefaultAsync(e => e.PagamentoId == id);
+        }
+
+        public async Task<Consulta> SetPaymentId(int id, long paymentId)
+        {
+            Consulta consultaAtDatabase = await _context.Consultas.FirstOrDefaultAsync(e => e.Id == id);
+
+            consultaAtDatabase.PagamentoId = paymentId;
+
+            await _context.SaveChangesAsync();
+            return consultaAtDatabase;
+        }
     }
 }
