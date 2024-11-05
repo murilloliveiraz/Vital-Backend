@@ -16,8 +16,8 @@ namespace VitalAPI.Controllers
             var deserializedRequest = JsonSerializer.Deserialize<MercadoPagoResponseDTO>(jsonString);
             if (deserializedRequest != null)
             {
-                string dataId = deserializedRequest.Data?.Id;
-                string status = deserializedRequest.Action;
+                string dataId = deserializedRequest.data?.id;
+                string status = deserializedRequest.action;
 
                 Console.WriteLine($"Data ID: {dataId}");
                 Console.WriteLine($"Status: {status}");

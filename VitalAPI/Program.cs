@@ -116,6 +116,8 @@ static void ConfigurarInjecaoDeDependencia(WebApplicationBuilder builder)
     .AddScoped<IConsultaRepository, ConsultaRepository>()
     .AddScoped<IConsultaService, ConsultaService>()
     .AddScoped<IDocumentoRepository, DocumentoRepository>()
+    .AddScoped<IPixService, PixService>()
+    .AddScoped<ICreditCardService, CreditCardService>()
     .AddScoped<IDocumentoService, DocumentoService>()
     .AddScoped<IGoogleMeetService, GoogleMeetService>();
 }

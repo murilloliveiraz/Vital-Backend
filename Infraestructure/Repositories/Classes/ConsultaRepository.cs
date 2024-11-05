@@ -17,6 +17,7 @@ namespace Infraestructure.Repositories.Classes
         public async Task<Consulta> Create(Consulta model)
         {
             model.Status = "Agendado";
+            model.StatusPagamento = "Pendente";
             await _context.Consultas.AddAsync(model);
             await _context.SaveChangesAsync();
             return model;

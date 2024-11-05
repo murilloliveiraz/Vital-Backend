@@ -16,7 +16,7 @@ namespace VitalAPI.Controllers
         }
 
         [HttpGet]
-        [Authorize(Policy = "AdminOnly")]
+        [Authorize]
         public async Task<IActionResult> Get()
         {
             return Ok(await _servicoService.Get());

@@ -2,17 +2,17 @@
 {
     public class MercadoPagoResponseDTO
     {
-            public int Id { get; set; }
-            public bool LiveMode { get; set; }
-            public string Type { get; set; }
-            public string DateCreated { get; set; }
-            public int UserId { get; set; }
-            public string ApiVersion { get; set; }
-            public string Action { get; set; }
-            public Data Data { get; set; }
+            public int id { get; set; }
+            public bool live_mode { get; set; }
+            public string type { get; set; }
+            public string date_created { get; set; }
+            public int userid { get; set; }
+            public string api_version { get; set; }
+            public string action { get; set; }
+            public Data data { get; set; }
     }
     public class Data
     {
-        public string Id { get; set; }
+        public string id { get; set; }
     }
 }

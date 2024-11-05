@@ -30,7 +30,7 @@ namespace VitalAPI.Controllers
             {
                 await _consultaRepository.SetPaymentId(model.ConsultaId, payment.Id.Value);
             }
-            return Created();
+            return Ok(payment);
         }
     }
 }
