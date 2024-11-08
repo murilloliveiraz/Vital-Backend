@@ -65,7 +65,6 @@ namespace Application.Services.Classes
 
             var client = new PaymentClient();
             Payment payment = await client.CreateAsync(paymentRequest, requestOptions);
-            Console.WriteLine(payment);
             return payment;
         }
     }

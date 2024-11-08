@@ -134,7 +134,17 @@ namespace Application.Services.Classes
         public async Task<IEnumerable<AgendarConsultaResponseContract>?> GetAllScheduled()
         {
             var consultas = await _consultaRepository.GetAllScheduled();
-            return consultas.Select(e => _mapper.Map<AgendarConsultaResponseContract>(e));
+            var responses = new List<AgendarConsultaResponseContract>();
+
+            foreach (var exame in consultas.Take(10))
+            {
+                var paciente = await _pacienteService.GetById(exame.PacienteId);
+                var response = _mapper.Map<AgendarConsultaResponseContract>(exame);
+                response.PacienteNome = paciente?.Nome;
+                responses.Add(response);
+            }
+
+            return responses;
         }
 
         public async Task<AgendarConsultaResponseContract> GetById(int id)
