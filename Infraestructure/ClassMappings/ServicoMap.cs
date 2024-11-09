@@ -19,6 +19,10 @@ namespace Infraestructure.ClassMappings
             .HasColumnType("VARCHAR")
             .IsRequired();
             
+            builder.Property(s => s.TipoServico)
+            .HasColumnType("VARCHAR")
+            .IsRequired();
+            
             builder.Property(s => s.Valor)
             .HasColumnType("DECIMAL")
             .IsRequired();

@@ -32,7 +32,12 @@ namespace Infraestructure.Repositories.Classes
            .ToListAsync();
         }
 
-         public async Task<Administrador?> GetById(int id)
+        public async Task<Administrador?> GetByEmail(string email)
+        {
+            return await _context.Administradores.AsNoTracking().Include(p => p.Usuario).FirstOrDefaultAsync(p => p.Usuario.Email == email);
+        }
+
+        public async Task<Administrador?> GetById(int id)
         {
             return await _context.Administradores.AsNoTracking().Include(a => a.Usuario).FirstOrDefaultAsync(a => a.Id == id);
         }

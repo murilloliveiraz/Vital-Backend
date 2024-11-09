@@ -39,5 +39,12 @@ namespace Infraestructure.Repositories.Classes
            .Where(hs => hs.HospitalId == hospitalId)
            .ToListAsync();
         }
+
+        public async Task<IEnumerable<HospitalServico?>> GetAllHospitalsThatOfferAnSpecificService(int servicoId)
+        {
+            return await _context.HospitalServicos.Include(hs => hs.Hospital)
+          .Where(hs => hs.ServicoId == servicoId)
+          .ToListAsync();
+        }
     }
 }

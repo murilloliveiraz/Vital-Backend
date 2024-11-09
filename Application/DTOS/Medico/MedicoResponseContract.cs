@@ -11,7 +11,7 @@ namespace Application.DTOS.Medico
         public string Role { get; set; }
         public int HospitalId { get; set; }
         public string Especialidade { get; set; } = string.Empty;
-        public int CriadoPorUsuarioId { get; set; }
+        public string CriadoPorEmail { get; set; }
         public DateTime? DataInativacao { get; set; }
         public DateTime DataCriacao { get; set; }
     }

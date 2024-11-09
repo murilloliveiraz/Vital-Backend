@@ -58,5 +58,17 @@ namespace Infraestructure.Repositories.Classes
             await _context.SaveChangesAsync();
             return servicoAtDatabase;
         }
+
+        public async Task<IEnumerable<Servico?>> GetAllExamsServices()
+        {
+            return await _context.Servicos.AsNoTracking().Where(s => s.DataInativacao == null && s.TipoServico == "Exame").OrderBy(s => s.ServicoId)
+           .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Servico?>> GetAllAppointmentsServices()
+        {
+            return await _context.Servicos.AsNoTracking().Where(s => s.DataInativacao == null && s.TipoServico == "Consulta").OrderBy(s => s.ServicoId)
+           .ToListAsync();
+        }
     }
 }

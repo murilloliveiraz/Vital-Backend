@@ -9,6 +9,6 @@ namespace Domain
         public string Role { get; set; }
         public DateTime DataCriacao { get; set; }
         public DateTime? DataInativacao { get; set; }
-        public int CriadoPorUsuarioId { get; set; }
+        public string CriadoPorEmail { get; set; }
     }
 }
