@@ -20,7 +20,7 @@ namespace Application.Mapper
                 .ForMember(dest => dest.CPF, opt => opt.MapFrom(src => src.Usuario.CPF))
                 .ForMember(dest => dest.DataCriacao, opt => opt.MapFrom(src => src.Usuario.DataCriacao))
                 .ForMember(dest => dest.DataInativacao, opt => opt.MapFrom(src => src.Usuario.DataInativacao))
-                .ForMember(dest => dest.CriadoPorUsuarioId, opt => opt.MapFrom(src => src.Usuario.CriadoPorUsuarioId))
+                .ForMember(dest => dest.CriadoPorEmail, opt => opt.MapFrom(src => src.Usuario.CriadoPorEmail))
                 .ReverseMap();
         }
     }
