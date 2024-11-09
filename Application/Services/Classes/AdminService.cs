@@ -1,8 +1,10 @@
 using Application.DTOS.Admin;
+using Application.DTOS.Paciente;
 using Application.DTOS.Usuario;
 using Application.Services.Interfaces;
 using AutoMapper;
 using Domain;
+using Infraestructure.Repositories.Classes;
 using Infraestructure.Repositories.Interfaces;
 
 namespace Application.Services.Classes
@@ -41,6 +43,12 @@ namespace Application.Services.Classes
         {
             var admins = await _adminRepository.Get();
             return admins.Select(ad => _mapper.Map<AdminResponseContract>(ad));
+        }
+
+        public async Task<AdminResponseContract?> GetByEmail(string email)
+        {
+            var admin = await _adminRepository.GetByEmail(email);
+            return _mapper.Map<AdminResponseContract>(admin);
         }
 
         public async Task<AdminResponseContract> GetById(int id)
