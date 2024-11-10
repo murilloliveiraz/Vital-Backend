@@ -42,6 +42,20 @@ namespace VitalAPI.Controllers
         {
             return Ok(await _servicoService.GetAllIncludingDeleteds());
         }
+        
+        [HttpGet("exames")]
+        [Authorize(Policy = "AdminOnly")]
+        public async Task<IActionResult> GetAllExamsServices()
+        {
+            return Ok(await _servicoService.GetAllExamsServices());
+        }
+
+        [HttpGet("consultas")]
+        [Authorize(Policy = "AdminOnly")]
+        public async Task<IActionResult> GetAllAppointmentsServices()
+        {
+            return Ok(await _servicoService.GetAllAppointmentsServices());
+        }
 
         [HttpPost]
         [Authorize(Policy = "AdminOnly")]

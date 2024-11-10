@@ -6,7 +6,7 @@ using Infraestructure.Repositories.Interfaces;
 
 namespace Application.Services.Classes
 {
-     public class ServicoService : IServicoService
+    public class ServicoService : IServicoService
     {
         private readonly IServicoRepository _servicoRepository;
         private readonly IMapper _mapper;
@@ -31,6 +31,18 @@ namespace Application.Services.Classes
         public async Task<IEnumerable<ServicoResponseContract>> Get()
         {
             var servicos = await _servicoRepository.Get();
+            return servicos.Select(s => _mapper.Map<ServicoResponseContract>(s));
+        }
+
+        public async Task<IEnumerable<ServicoResponseContract>> GetAllAppointmentsServices()
+        {
+            var servicos = await _servicoRepository.GetAllAppointmentsServices();
+            return servicos.Select(s => _mapper.Map<ServicoResponseContract>(s));
+        }
+
+        public async Task<IEnumerable<ServicoResponseContract>> GetAllExamsServices()
+        {
+            var servicos = await _servicoRepository.GetAllExamsServices();
             return servicos.Select(s => _mapper.Map<ServicoResponseContract>(s));
         }
 

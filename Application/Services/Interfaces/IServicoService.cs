@@ -6,5 +6,7 @@ namespace Application.Services.Interfaces
     {
         Task<ServicoResponseContract> GetByName(string name);
         Task<IEnumerable<ServicoResponseContract>> GetAllIncludingDeleteds();
+        Task<IEnumerable<ServicoResponseContract>> GetAllExamsServices();
+        Task<IEnumerable<ServicoResponseContract>> GetAllAppointmentsServices();
     }
 }

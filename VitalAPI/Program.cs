@@ -73,6 +73,7 @@ static void ConfigurarInjecaoDeDependencia(WebApplicationBuilder builder)
     var config = new MapperConfiguration(configs => {
         configs.AddProfile<HospitalProfile>();
         configs.AddProfile<ServicoProfile>();
+        configs.AddProfile<DocumentoProfile>();
         configs.AddProfile<UsuarioProfile>();
         configs.AddProfile<PacienteProfile>();
         configs.AddProfile<MedicoProfile>();
