@@ -16,5 +16,6 @@
         public string EmailParaReceberResultado { get; set; }
         public string ObservacoesDaClinica { get; set; }
         public string QueixasDoPaciente { get; set; }
+        public string? UrlResultadoClinicaExterna { get; set; }
     }
 }
