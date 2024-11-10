@@ -36,16 +36,26 @@ namespace Infraestructure.Services
             return new S3UploadResult { Success = true, Message = $"File {key} uploaded to S3 successfully!", Key = key };
         }
         
-        public async Task<S3FileResult> GetFileByKeyAsync(string key, string bucketName)
+        public async Task<S3FileResponse> GetFileByKeyAsync(string key, string bucketName)
         {
             var bucketExists = await Amazon.S3.Util.AmazonS3Util.DoesS3BucketExistV2Async(_s3Client, bucketName);
             if (!bucketExists)
             {
-                return new S3FileResult { Success = false, Message = "Bucket does not exists"};
+                return new S3FileResponse { Success = false, Message = "Bucket does not exists"};
             }
-
-            var s3Object = await _s3Client.GetObjectAsync(bucketName, key);
-            return new S3FileResult { Success = true, Stream = s3Object.ResponseStream, ContentType = s3Object.Headers.ContentType};
+            var urlRequest = new GetPreSignedUrlRequest()
+            {
+                BucketName = bucketName,
+                Key = key,
+                Expires = DateTime.UtcNow.AddMinutes(5)
+            };
+            return new S3FileResponse()
+            {  
+                Name = "download",
+                PresignedUrl = _s3Client.GetPreSignedURL(urlRequest),
+                Message = "Sucess",
+                Success = true
+            };
         }
     }
 }
