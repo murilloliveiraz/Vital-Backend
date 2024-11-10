@@ -11,7 +11,9 @@ namespace Application.DTOS.Consulta
         public DateTime Data { get; set; }
         public int PacienteId { get; set; }
         public int MedicoId { get; set; }
-        public ICollection<Documento> Documentos { get; set; }
+        public string TipoConsulta { get; set; }
+        public string Status { get; set; }
+        public ICollection<AdicionarDocumentoResponseContract> Documentos { get; set; }
         
     }
 }

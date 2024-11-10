@@ -8,11 +8,9 @@ namespace Application.Mapper
     {
         public ConsultaProfile()
         {
-            //CreateMap<Consulta, AdicionarResultadoRequestContract>().ReverseMap();
-            //CreateMap<Consulta, AdicionarResultadoResponseContract>().ReverseMap();
             CreateMap<Consulta, AgendarConsultaRequestContract>().ReverseMap();
             CreateMap<Consulta, AgendarConsultaResponseContract>().ReverseMap();
-            //CreateMap<Consulta, ConsultaConcluidoResponse>().ReverseMap();
+            CreateMap<Consulta, ConsultaConcluidaResponse>().ReverseMap();
         }
     }
 }
