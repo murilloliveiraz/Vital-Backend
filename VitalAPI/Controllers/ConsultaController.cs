@@ -1,4 +1,6 @@
 ﻿using Application.DTOS.Consulta;
+using Application.DTOS.Exame;
+using Application.Services.Classes;
 using Application.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +17,7 @@ namespace VitalAPI.Controllers
         {
             _consultaService = consultaService;
         }
+
 
         [HttpPost("agendar")]
         [Authorize]

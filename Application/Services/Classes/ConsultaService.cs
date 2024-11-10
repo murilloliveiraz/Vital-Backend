@@ -6,8 +6,7 @@ using Domain;
 using Infraestructure.Repositories.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Google.Apis.Calendar.v3.Data;
-using Application.DTOS.Exame;
-using Infraestructure.Repositories.Classes;
+using Infraestructure.Services.Interfaces;
 
 namespace Application.Services.Classes
 {
@@ -21,8 +20,9 @@ namespace Application.Services.Classes
         private readonly IMapper _mapper;
         private IConfiguration _configuration;
         private readonly IEmailService _emailSender;
+        private readonly IS3StorageService _s3StorageService;
 
-        public ConsultaService(IMapper mapper, IConsultaRepository consultaRepository, IPacienteService pacienteService, IConfiguration configuration, IEmailService emailSender, IDocumentoService documentoService, IMedicoService medicoService, IGoogleMeetService googleMeetService)
+        public ConsultaService(IMapper mapper, IConsultaRepository consultaRepository, IPacienteService pacienteService, IConfiguration configuration, IEmailService emailSender, IDocumentoService documentoService, IMedicoService medicoService, IGoogleMeetService googleMeetService, IS3StorageService s3StorageService)
         {
             _mapper = mapper;
             _consultaRepository = consultaRepository;
@@ -32,6 +32,7 @@ namespace Application.Services.Classes
             _documentoService = documentoService;
             _medicoService = medicoService;
             _googleMeetService = googleMeetService;
+            _s3StorageService = s3StorageService;
         }
 
         public async Task<AgendarConsultaResponseContract> Create(AgendarConsultaRequestContract model)
@@ -122,7 +123,23 @@ namespace Application.Services.Classes
         public async Task<IEnumerable<ConsultaConcluidaResponse>?> GetAllPatientAppointmentsCompleted(int id)
         {
             var consultas = await _consultaRepository.GetAllPatientAppointmentsCompleted(id);
-            return consultas.Select(e => _mapper.Map<ConsultaConcluidaResponse>(e));
+            var consultasResponse = consultas.Select(e => _mapper.Map<ConsultaConcluidaResponse>(e)).ToList();
+            var bucketname = _configuration["S3Storage:Bucket-Name"];
+
+            var tasks = consultasResponse.SelectMany(consulta =>
+                consulta.Documentos.Select(async documento =>
+                {
+                    var doc = _mapper.Map<AdicionarDocumentoResponseContract>(documento);
+                    var file = await _s3StorageService.GetFileByKeyAsync(doc.S3KeyPath, bucketname);
+                    if (file.Success)
+                    {
+                        doc.ArquivoResultadoUrl = file.PresignedUrl;
+                    }
+                })
+            );
+
+            await Task.WhenAll(tasks);
+            return consultasResponse;
         }
 
         public async Task<IEnumerable<AgendarConsultaResponseContract>?> GetAllPatientAppointmentsScheduled(int id)

@@ -71,6 +71,7 @@ namespace Infraestructure.Repositories.Classes
         {
             return await _context.Consultas.AsNoTracking().Where(e => e.PacienteId == id && e.Status == "Concluido")
            .OrderByDescending(e => e.Data)
+           .Include(e=> e.Documentos)
            .ToListAsync();
         }
 
