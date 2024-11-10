@@ -8,5 +8,6 @@ namespace Application.Services.Interfaces
         Task<MedicoResponseContract?> GetByCRM(string crm);
         Task<MedicoResponseContract?> GetByEmail(string email);
         Task<IEnumerable<MedicoResponseContract>?> GetAllBySpecialization(string especialization);
+        Task<IEnumerable<MedicoResponseContract>?> GetAllBySpecializationAndHospitalId(string especialization, int id);
     }
 }

@@ -63,5 +63,11 @@ namespace Infraestructure.Repositories.Classes
             await _context.SaveChangesAsync();
             return medicoAtDatabase;
         }
+
+        public async Task<IEnumerable<Medico>?> GetAllBySpecializationAndHospitalId(string especialization, int id)
+        {
+            return await _context.Medicos.AsNoTracking().Where(m => m.Especialidade == especialization && m.HospitalId == id).OrderBy(m => m.Id).Include(m => m.Usuario)
+          .ToListAsync();
+        }
     }
 }
