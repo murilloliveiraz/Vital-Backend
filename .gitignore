@@ -5,6 +5,7 @@
 
 calendarcredential.json
 CalendarAuthToken/
+Google.Apis.Auth.OAuth2.Responses.TokenResponse-user
 
 # User-specific files
 *.rsuser
