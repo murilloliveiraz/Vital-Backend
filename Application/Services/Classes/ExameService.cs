@@ -36,6 +36,7 @@ namespace Application.Services.Classes
             if (resultUpload.Success)
             {
                 exame.S3KeyPath = resultUpload.Key;
+                exame.Status = "Concluido";
             }
             await _exameRepository.Update(exame);
             MailRequest mailRequest = new MailRequest
@@ -90,7 +91,19 @@ namespace Application.Services.Classes
         public async Task<IEnumerable<ExameConcluidoResponse>?> GetAllPatientExamsCompleted(int id)
         {
             var exames = await _exameRepository.GetAllPatientExamsCompleted(id);
-            return exames.Select(e => _mapper.Map<ExameConcluidoResponse>(e));
+            var examesResponse = exames.Select(e => _mapper.Map<ExameConcluidoResponse>(e)).ToList();
+            var bucketname = _configuration["S3Storage:Bucket-Name"];
+            var tasks = examesResponse.Select(async e =>
+            {
+                var file = await _s3StorageService.GetFileByKeyAsync(e.S3KeyPath, bucketname);
+                if (file.Success)
+                {
+                    e.ArquivoResultadoUrl = file.PresignedUrl;
+                }
+            });
+
+            await Task.WhenAll(tasks);
+            return examesResponse;
         }
 
         public async Task<IEnumerable<AgendarExameResponseContract>?> GetAllPatientExamsScheduled(int id)
@@ -147,7 +160,6 @@ namespace Application.Services.Classes
             return responses;
         }
 
-
         public async Task<IEnumerable<ExameConcluidoResponse>?> GetAllDoctorExamsCompleted(int id)
         {
             var exames = await _exameRepository.GetAllDoctorAppointmentsCompleted(id);
@@ -157,6 +169,12 @@ namespace Application.Services.Classes
         public async Task<ExameConcluidoResponse> SetExamAsCompleted(int id)
         {
             var exame = await _exameRepository.SetExamAsCompleted(id);
+            return _mapper.Map<ExameConcluidoResponse>(exame);
+        }
+
+        public async Task<ExameConcluidoResponse> AddExternURL(int id, string url)
+        {
+            var exame = await _exameRepository.AddExternURL(id, url);
             return _mapper.Map<ExameConcluidoResponse>(exame);
         }
     }

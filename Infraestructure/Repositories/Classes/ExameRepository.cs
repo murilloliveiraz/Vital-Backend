@@ -13,6 +13,17 @@ namespace Infraestructure.Repositories.Classes
         {
             _context = context;
         }
+
+        public async Task<Exame> AddExternURL(int id, string url)
+        {
+            Exame exameAtDatabase = await _context.Exames.FirstOrDefaultAsync(e => e.Id == id);
+
+            exameAtDatabase.UrlResultadoClinicaExterna = url;
+
+            await _context.SaveChangesAsync();
+            return exameAtDatabase;
+        }
+
         public async Task<Exame> Create(Exame model)
         {
             model.Status = "Agendado";

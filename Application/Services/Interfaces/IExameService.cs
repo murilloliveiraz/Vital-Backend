@@ -8,6 +8,7 @@ namespace Application.Services.Interfaces
         Task<IEnumerable<AgendarExameResponseContract>?> GetAllScheduled();
         Task<IEnumerable<ExameConcluidoResponse>?> GetAllCompleted();
         Task<ExameConcluidoResponse> SetExamAsCompleted(int id);
+        Task<ExameConcluidoResponse> AddExternURL(int id, string url);
         Task<IEnumerable<AgendarExameResponseContract>?> GetAllPatientExamsScheduled(int id);
         Task<IEnumerable<ExameConcluidoResponse>?> GetAllPatientExamsCompleted(int id);
         Task<IEnumerable<AgendarExameResponseContract>?> GetAllDoctorExamsScheduled(int id);

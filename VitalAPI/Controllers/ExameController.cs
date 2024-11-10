@@ -1,4 +1,5 @@
 ﻿using Application.DTOS.Exame;
+using Application.Helpers;
 using Application.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -125,6 +126,19 @@ namespace VitalAPI.Controllers
             }
 
             var result = await _exameService.Update(id, model);
+            return Ok(result);
+        }
+
+        [HttpPatch("{id}")]
+        [Authorize(Policy = "AdminOnly")]
+        public async Task<IActionResult> AddExternURL(int id, [FromBody] ExternUrlDto dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var result = await _exameService.AddExternURL(id, dto.Url);
             return Ok(result);
         }
 
