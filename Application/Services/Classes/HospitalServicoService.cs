@@ -1,3 +1,4 @@
+using Application.DTOS.Hospital;
 using Application.DTOS.HospitalServico;
 using Application.DTOS.Servicos;
 using Application.Services.Interfaces;
@@ -47,6 +48,12 @@ namespace Application.Services.Classes
         {
             var servicosDoHospital = await _hospitalServicoRepository.GetAllByHospitalId(hospitalId);
             return servicosDoHospital.Select(hs => _mapper.Map<ServicoResponseContract>(hs.Servico));
+        }
+
+        public async Task<IEnumerable<HospitalResponseContract?>> GetAllHospitalsThatOfferAnSpecificService(int servicoId)
+        {
+            var servicosDoHospital = await _hospitalServicoRepository.GetAllHospitalsThatOfferAnSpecificService(servicoId);
+            return servicosDoHospital.Select(hs => _mapper.Map<HospitalResponseContract>(hs.Hospital));
         }
     }
 }

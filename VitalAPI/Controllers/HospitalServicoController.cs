@@ -1,5 +1,6 @@
 using Application.DTOS.HospitalServico;
 using Application.Services.Interfaces;
+using Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,7 +28,14 @@ namespace VitalAPI.Controllers
         public async Task<IActionResult> GetByHospitalIdAndServicoId(int hospitalId, int servicoId)
         {
             return Ok(await _hospitalServicoService.GetByHospitalIdAndServicoId(hospitalId, servicoId));
-        } 
+        }
+
+        [HttpGet("hospitais-por-servico/{servicoId}")]
+        [Authorize]
+        public async Task<IActionResult>GetAllHospitalsThatOfferAnSpecificService(int servicoId)
+        {
+            return Ok(await _hospitalServicoService.GetAllHospitalsThatOfferAnSpecificService(servicoId));
+        }
 
         [HttpPost]
         [Authorize(Policy = "AdminOnly")]
