@@ -84,5 +84,18 @@ namespace Application.Services.Classes
                 Conteudo = BsonTypeMapper.MapToDotNetValue(r.Conteudo)
             }).ToList();
         }
+
+        public async Task<RegistroResponseContract> GetById(ObjectId registroId)
+        {
+            var registro = await _registroRepository.GetById(registroId);
+            return new RegistroResponseContract
+            {
+                Id = registro.Id.ToString(),
+                ProntuarioId = registro.ProntuarioId,
+                Tipo = registro.Tipo,
+                Data = registro.Data,
+                Conteudo = BsonTypeMapper.MapToDotNetValue(registro.Conteudo)
+            };
+        }
     }
 }

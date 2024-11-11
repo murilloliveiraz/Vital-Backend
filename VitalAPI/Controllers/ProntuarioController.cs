@@ -2,6 +2,7 @@
 using Application.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 
 namespace VitalAPI.Controllers
 {
@@ -36,6 +37,24 @@ namespace VitalAPI.Controllers
             if (prontuario == null)
                 return NotFound();
             return Ok(prontuario);
+        }
+
+        [HttpGet("buscar-registro/{registroId}")]
+        public async Task<IActionResult> GetRegistroById(string registroId)
+        {
+            if (!ObjectId.TryParse(registroId, out ObjectId objectId))
+            {
+                return BadRequest("Invalid ID format.");
+            }
+
+            var registro = await _prontuarioService.GetById(objectId);
+
+            if (registro == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(registro);
         }
     }
 }
