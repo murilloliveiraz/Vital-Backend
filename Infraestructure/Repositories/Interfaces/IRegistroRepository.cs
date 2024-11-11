@@ -1,4 +1,5 @@
 ﻿using Domain;
+using MongoDB.Bson;
 
 namespace Infraestructure.Repositories.Interfaces
 {
@@ -6,5 +7,6 @@ namespace Infraestructure.Repositories.Interfaces
     {
         Task CreateRecord(ProntuarioRegistro registro);
         Task<ICollection<ProntuarioRegistro>> GetAllRecords(int prontuarioId);
+        Task<ProntuarioRegistro> GetById(ObjectId registroId);
     }
 }

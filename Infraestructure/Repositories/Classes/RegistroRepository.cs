@@ -3,6 +3,7 @@ using Infraestructure.Helpers;
 using Infraestructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace Infraestructure.Repositories.Classes
@@ -28,6 +29,12 @@ namespace Infraestructure.Repositories.Classes
         {
             var registros = await _registros.Find(r => r.ProntuarioId == prontuarioId).ToListAsync();
             return registros;
+        }
+
+        public async Task<ProntuarioRegistro> GetById(ObjectId registroId)
+        {
+            var registro = await _registros.Find(r => r.Id == registroId).FirstOrDefaultAsync();
+            return registro;
         }
     }
 }
