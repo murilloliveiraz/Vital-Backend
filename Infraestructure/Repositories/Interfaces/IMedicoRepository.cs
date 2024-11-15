@@ -8,5 +8,6 @@ namespace Infraestructure.Repositories.Interfaces
         Task<Medico?> GetByEmail(string email);
         Task<IEnumerable<Medico>?> GetAllBySpecialization(string especialization);
         Task<IEnumerable<Medico>?> GetAllBySpecializationAndHospitalId(string especialization, int id);
+        Task<IEnumerable<Medico>?> GetAllByHospitalId(int id);
     }
 }

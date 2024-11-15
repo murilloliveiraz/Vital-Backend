@@ -69,5 +69,11 @@ namespace Infraestructure.Repositories.Classes
             return await _context.Medicos.AsNoTracking().Where(m => m.Especialidade == especialization && m.HospitalId == id).OrderBy(m => m.Id).Include(m => m.Usuario)
           .ToListAsync();
         }
+
+        public async Task<IEnumerable<Medico>?> GetAllByHospitalId(int id)
+        {
+            return await _context.Medicos.AsNoTracking().Where(m => m.HospitalId == id).OrderBy(m => m.Id).Include(m => m.Usuario)
+          .ToListAsync();
+        }
     }
 }

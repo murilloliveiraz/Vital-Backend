@@ -43,6 +43,12 @@ namespace Application.Services.Classes
             return medicos.Select(m => _mapper.Map<MedicoResponseContract>(m));
         }
 
+        public async Task<IEnumerable<MedicoResponseContract>?> GetAllByHospitalId(int id)
+        {
+            var medicos = await _medicoRepository.GetAllByHospitalId(id);
+            return medicos.Select(m => _mapper.Map<MedicoResponseContract>(m));
+        }
+
         public async Task<IEnumerable<MedicoResponseContract>?> GetAllBySpecialization(string especialization)
         {
             var medicos = await _medicoRepository.GetAllBySpecialization(especialization);

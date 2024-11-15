@@ -66,6 +66,13 @@ namespace VitalAPI.Controllers
         {
             return Ok(await _medicoService.GetAllBySpecializationAndHospitalId(specialization, id));
         }
+        
+        [HttpGet("pesquisar/hospital")]
+        [Authorize]
+        public async Task<IActionResult> GetAllByHospitalId(int id)
+        {
+            return Ok(await _medicoService.GetAllByHospitalId(id));
+        }
 
         [HttpGet("{id}")]
         [Authorize]
