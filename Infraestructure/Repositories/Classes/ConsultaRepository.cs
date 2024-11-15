@@ -104,7 +104,7 @@ namespace Infraestructure.Repositories.Classes
             return appointmentAtDatabase;
         }
 
-        public async Task<Consulta> UpdatePaymentStatus(int id, string status)
+        public async Task<Consulta> UpdatePaymentStatus(long id, string status)
         {
             Consulta consultaAtDatabase = await _context.Consultas.FirstOrDefaultAsync(e => e.Id == id);
 

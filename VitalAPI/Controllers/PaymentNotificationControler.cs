@@ -13,6 +13,7 @@ namespace VitalAPI.Controllers
         public async Task<IActionResult> Post(object request)
         {
             var jsonString = request.ToString();
+            Console.WriteLine(request);
             var deserializedRequest = JsonSerializer.Deserialize<MercadoPagoResponseDTO>(jsonString);
             if (deserializedRequest != null)
             {
