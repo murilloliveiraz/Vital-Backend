@@ -6,6 +6,7 @@ using MercadoPago.Client;
 using MercadoPago.Resource.Payment;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using MercadoPago.Error;
 
 namespace Application.Services.Classes
 {
@@ -64,8 +65,15 @@ namespace Application.Services.Classes
             };
 
             var client = new PaymentClient();
-            Payment payment = await client.CreateAsync(paymentRequest, requestOptions);
-            return payment;
+            try {
+                Payment payment = await client.CreateAsync(paymentRequest, requestOptions);
+                return payment;
+            }
+            catch (MercadoPagoException ex)
+{
+                Console.WriteLine($"Erro: {ex.Message}");
+                throw;
+            }
         }
     }
 }
