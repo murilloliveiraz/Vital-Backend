@@ -13,6 +13,7 @@ namespace Application.DTOS.Consulta
         public int MedicoId { get; set; }
         public string TipoConsulta { get; set; }
         public string Status { get; set; }
+        public string? StatusPagamento { get; set; }
         public ICollection<AdicionarDocumentoResponseContract> Documentos { get; set; }
         
     }

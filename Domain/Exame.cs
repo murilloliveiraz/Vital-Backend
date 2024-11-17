@@ -17,5 +17,6 @@
         public string ObservacoesDaClinica { get; set; }
         public string QueixasDoPaciente { get; set; }
         public string? UrlResultadoClinicaExterna { get; set; }
+        public string? StatusPagamento { get; set; }
     }
 }

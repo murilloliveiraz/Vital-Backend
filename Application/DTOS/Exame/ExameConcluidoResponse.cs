@@ -10,6 +10,7 @@ namespace Application.DTOS.Exame
         public DateTime Data { get; set; }
         public string S3KeyPath { get; set; }
         public string ArquivoResultadoUrl { get; set; }
+        public string? StatusPagamento { get; set; }
         public string? UrlResultadoClinicaExterna { get; set; }
     }
 }
