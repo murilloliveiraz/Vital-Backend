@@ -123,6 +123,7 @@ namespace Application.Services.Classes
                 var paciente = await _pacienteService.GetById(exame.PacienteId);
                 var response = _mapper.Map<AgendarExameResponseContract>(exame);
                 response.PacienteNome = paciente?.Nome;
+                response.PacienteCPF = paciente?.CPF;
                 responses.Add(response);
             }
 
