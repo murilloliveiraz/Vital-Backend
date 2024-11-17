@@ -177,5 +177,17 @@ namespace Application.Services.Classes
             var exame = await _exameRepository.AddExternURL(id, url);
             return _mapper.Map<ExameConcluidoResponse>(exame);
         }
+
+        public async Task<AgendarExameResponseContract> UpdatePaymentStatus(int id)
+        {
+            var exame = await _exameRepository.UpdatePaymentStatus(id);
+            return _mapper.Map<AgendarExameResponseContract>(exame);
+        }
+
+        public async Task<IEnumerable<DateTime>> GetAllDatesOcupied()
+        {
+            var exames = await _exameRepository.GetAllScheduled();
+            return exames.Select(exame => exame.Data);
+        }
     }
 }

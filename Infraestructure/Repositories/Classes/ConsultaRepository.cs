@@ -104,17 +104,17 @@ namespace Infraestructure.Repositories.Classes
             return appointmentAtDatabase;
         }
 
-        public async Task<Consulta> UpdatePaymentStatus(long id, string status)
+        public async Task<Consulta> UpdatePaymentStatus(int id)
         {
-            Consulta consultaAtDatabase = await _context.Consultas.FirstOrDefaultAsync(e => e.Id == id);
+            Consulta consultaAtDatabase = await GetById(id);
 
-            consultaAtDatabase.StatusPagamento = status;
+            consultaAtDatabase.StatusPagamento = "Concluido";
 
             await _context.SaveChangesAsync();
             return consultaAtDatabase;
         }
 
-        public async Task<Consulta> GetByPaymentId(int id)
+        public async Task<Consulta> GetByPaymentId(long id)
         {
             return await _context.Consultas.AsNoTracking().FirstOrDefaultAsync(e => e.PagamentoId == id);
         }

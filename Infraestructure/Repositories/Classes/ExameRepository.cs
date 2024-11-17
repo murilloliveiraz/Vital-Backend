@@ -27,6 +27,7 @@ namespace Infraestructure.Repositories.Classes
         public async Task<Exame> Create(Exame model)
         {
             model.Status = "Agendado";
+            model.StatusPagamento = "Pendente";
             await _context.Exames.AddAsync(model);
             await _context.SaveChangesAsync();
             return model;
@@ -110,6 +111,16 @@ namespace Infraestructure.Repositories.Classes
 
             await _context.SaveChangesAsync();
             return exameAtDatabase;
+        }
+
+        public async Task<Exame> UpdatePaymentStatus(int id)
+        {
+            Exame examAtDatabase = await _context.Exames.FirstOrDefaultAsync(e => e.Id == id);
+
+            examAtDatabase.StatusPagamento = "Concluido";
+
+            await _context.SaveChangesAsync();
+            return examAtDatabase;
         }
     }
 }

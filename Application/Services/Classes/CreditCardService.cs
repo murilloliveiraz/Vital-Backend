@@ -26,54 +26,66 @@ namespace Application.Services.Classes
             string idempotencyKey = Guid.NewGuid().ToString();
             requestOptions.CustomHeaders.Add("x-idempotency-key", idempotencyKey);
 
+            var item = new PaymentItemRequest
+            {
+                CategoryId = request.NomeServico,
+                Id = $"{request.ConsultaId.ToString()}-{request.NomeServico}",
+                Description = $"{request.NomeServico} na VITAL",
+                Quantity = 1,
+                Title = request.NomeServico,
+                UnitPrice = (decimal?)request.ValorConsulta,
+                EventDate = DateTime.Now,
+                Warranty = false,
+            };
+
+            var payerInfo = new PaymentAdditionalInfoPayerRequest
+            {
+                FirstName = request.NomePagador,
+                LastName = request.SobrenomePagador,
+            };
+
+            var additionalInfo = new PaymentAdditionalInfoRequest
+            {
+                Items = new List<PaymentItemRequest> { item },
+                Payer = payerInfo
+            };
+
+            var paymentPayerRequest = new PaymentPayerRequest
+            {
+                Email = request.EmailPagador,
+                FirstName = request.NomePagador,
+                LastName = request.SobrenomePagador,
+                Identification = new IdentificationRequest
+                {
+                    Type = "CPF",
+                    Number = request.Number,
+                },
+            };
+
             var paymentRequest = new PaymentCreateRequest
             {
-                TransactionAmount = request.ValorConsulta,
-                Token = request.Token,
+                ApplicationFee = null,
+                BinaryMode = false,
+                CampaignId = null,
+                Capture = false,
+                CouponAmount = null,
                 Description = request.NomeServico,
-                Installments = request.Installments,
-                PaymentMethodId = request.PaymentMethodId,
-                ExternalReference =  request.ConsultaId.ToString(),
-                StatementDescriptor = "VITAL",
+                DifferentialPricingId = null,
+                Installments = 1,
+                Metadata = null,
                 NotificationUrl = _configuration["Ngrok:NotificationUrl"],
-                Payer = new PaymentPayerRequest
-                {
-                    Email = request.EmailPagador,
-                    FirstName = request.NomePagador,
-                    LastName = request.NomePagador,
-                    Identification = new IdentificationRequest
-                    {
-                        Type = request.Type,
-                        Number = request.Number,
-                    },
-                },
-                AdditionalInfo = new PaymentAdditionalInfoRequest
-                {
-                    Items = new List<PaymentItemRequest>()
-                    {
-                        new PaymentItemRequest()
-                        {
-                            CategoryId = request.NomeServico,
-                            Id =  $"{request.ConsultaId.ToString()}-{request.NomeServico}",
-                            Description = $"{request.NomeServico} na VITAL",
-                            Quantity = 1,
-                            Title = request.NomeServico,
-                            UnitPrice = request.ValorConsulta
-                        }
-                    },
-                }
+                Payer = paymentPayerRequest,
+                PaymentMethodId = request.PaymentMethodId,
+                ExternalReference = request.ConsultaId.ToString(),
+                StatementDescriptor = "VITAL",
+                TransactionAmount = (decimal?)request.ValorConsulta,
+                Token = request.Token,
+                AdditionalInfo = additionalInfo,
             };
 
             var client = new PaymentClient();
-            try {
-                Payment payment = await client.CreateAsync(paymentRequest, requestOptions);
-                return payment;
-            }
-            catch (MercadoPagoException ex)
-{
-                Console.WriteLine($"Erro: {ex.Message}");
-                throw;
-            }
+            Payment payment = await client.CreateAsync(paymentRequest, requestOptions);
+            return payment;
         }
     }
 }

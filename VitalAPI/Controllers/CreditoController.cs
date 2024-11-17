@@ -23,10 +23,10 @@ namespace VitalAPI.Controllers
         public async Task<IActionResult> Create(CreditCardPayment model)
         {
             var payment = await _creditCardService.CobrarComCartaoDeCredito(model);
-            await _consultaRepository.UpdatePaymentStatus(model.ConsultaId, "Concluido");
             if (payment.Id.HasValue)
             {
                 await _consultaRepository.SetPaymentId(model.ConsultaId, payment.Id.Value);
+                await _consultaRepository.UpdatePaymentStatus(model.ConsultaId);
             }
             return Ok(payment);
         }

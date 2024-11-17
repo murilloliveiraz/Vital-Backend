@@ -7,6 +7,7 @@ using Infraestructure.Repositories.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Google.Apis.Calendar.v3.Data;
 using Infraestructure.Services.Interfaces;
+using Infraestructure.Repositories.Classes;
 
 namespace Application.Services.Classes
 {
@@ -164,6 +165,12 @@ namespace Application.Services.Classes
             return responses;
         }
 
+        public async Task<AgendarConsultaResponseContract> UpdatePaymentStatus(int id)
+        {
+            var consulta = await _consultaRepository.UpdatePaymentStatus(id);
+            return _mapper.Map<AgendarConsultaResponseContract>(consulta);
+        }
+
         public async Task<AgendarConsultaResponseContract> GetById(int id)
         {
             var consulta = await _consultaRepository.GetById(id);
@@ -176,6 +183,11 @@ namespace Application.Services.Classes
             _mapper.Map(model, consulta);
             await _consultaRepository.Update(consulta);
             return _mapper.Map<AgendarConsultaResponseContract>(consulta);
+        }
+        public async Task<IEnumerable<DateTime>> GetAllDatesOcupied()
+        {
+            var consultas = await _consultaRepository.GetAllScheduled();
+            return consultas.Select(consulta => consulta.Data);
         }
     }
 }

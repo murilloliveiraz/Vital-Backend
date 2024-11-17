@@ -1,6 +1,4 @@
 using Application.DTOS.Consulta;
-using Application.DTOS.Exame;
-using Domain;
 
 namespace Application.Services.Interfaces
 {
@@ -10,6 +8,8 @@ namespace Application.Services.Interfaces
         Task<AgendarConsultaResponseContract> CreateRemoteAppointment(AgendarConsultaRequestContract model);
         Task<IEnumerable<ConsultaConcluidaResponse>?> GetAllCompleted();
         Task<ConsultaConcluidaResponse> SetAppointmentAsCompleted(int id);
+        Task<IEnumerable<DateTime>> GetAllDatesOcupied();
+        Task<AgendarConsultaResponseContract> UpdatePaymentStatus(int id);
         Task<IEnumerable<AgendarConsultaResponseContract>?> GetAllPatientAppointmentsScheduled(int id);
         Task<IEnumerable<ConsultaConcluidaResponse>?> GetAllPatientAppointmentsCompleted(int id);
         Task<IEnumerable<AgendarConsultaResponseContract>?> GetAllDoctorAppointmentsScheduled(int id);

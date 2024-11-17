@@ -99,6 +99,14 @@ namespace VitalAPI.Controllers
             return Ok(consultasConcluidos);
         }
 
+        [HttpGet("datas-ocupadas")]
+        [Authorize]
+        public async Task<IActionResult> GetAllOccupiedDates()
+        {
+            var consultas = await _consultaService.GetAllDatesOcupied();
+            return Ok(consultas);
+        }
+
         [HttpGet("medico/{id}/agendados")]
         [Authorize]
         public async Task<IActionResult> GetAllDoctorAppointmentsScheduled(int id)
@@ -136,8 +144,16 @@ namespace VitalAPI.Controllers
             return Ok(result);
         }
 
-        [HttpDelete("{id}")]
+        [HttpPut("atualizar-pagamento/{id}")]
         [Authorize(Policy = "AdminOnly")]
+        public async Task<IActionResult> UpdatePaymentStatus(int id)
+        {
+            var result = await _consultaService.UpdatePaymentStatus(id);
+            return Ok(result);
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
             await _consultaService.Delete(id);

@@ -25,7 +25,7 @@ namespace VitalAPI.Controllers
         public async Task<IActionResult> Create(PixPayment model)
         {
             var payment = await _pixService.CobrarComPix(model);
-            await _consultaRepository.UpdatePaymentStatus(model.ConsultaId, "Pendente");
+            await _consultaRepository.UpdatePaymentStatus(model.ConsultaId);
             if (payment.Id.HasValue)
             {
                 await _consultaRepository.SetPaymentId(model.ConsultaId, payment.Id.Value);
