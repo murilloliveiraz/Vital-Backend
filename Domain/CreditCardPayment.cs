@@ -9,6 +9,7 @@
         public int Installments { get; set; }
         public int ConsultaId { get; set; }
         public string NomePagador { get; set; }
+        public string SobrenomePagador { get; set; }
         public string PaymentMethodId { get; set; }
         public string EmailPagador { get; set; }
         public string Type { get; set; }
