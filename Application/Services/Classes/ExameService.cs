@@ -73,6 +73,13 @@ namespace Application.Services.Classes
         public async Task Delete(int id)
         {
             var exame = await _exameRepository.GetById(id);
+            MailRequest mailRequest = new MailRequest
+            {
+                ToEmail = exame.EmailParaReceberResultado,
+                Subject = "Confirmação de cancelamento de exame",
+                Body = CommunicationEmail.AppointmentCanceled(exame.Nome)
+            };
+            await _emailSender.SendEmailAsync(mailRequest);
             await _exameRepository.Delete(_mapper.Map<Exame>(exame));
         }
 

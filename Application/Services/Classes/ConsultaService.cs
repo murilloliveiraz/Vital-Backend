@@ -41,7 +41,7 @@ namespace Application.Services.Classes
             var paciente = await _pacienteService.GetById(model.PacienteId);
             if (paciente == null)
             {
-                throw new Exception("Paciente n�o encontrado.");
+                throw new Exception("Paciente não encontrado.");
             }
             Consulta consulta = _mapper.Map<Consulta>(model);
             consulta.TipoConsulta = "Presencial";
@@ -52,7 +52,7 @@ namespace Application.Services.Classes
             MailRequest mailRequest = new MailRequest
             {
                 ToEmail = consulta.EmailParaReceberNotificacoes,
-                Subject = "Confirma��o de agendamento de consulta",
+                Subject = "Confirmação de agendamento de consulta",
                 Body = CommunicationEmail.AppointmentConfirmationEmail(consulta.Nome)
             };
             await _emailSender.SendEmailAsync(mailRequest);
@@ -78,7 +78,7 @@ namespace Application.Services.Classes
             MailRequest mailRequest = new MailRequest
             {
                 ToEmail = consulta.EmailParaReceberNotificacoes,
-                Subject = "Confirma��o de agendamento de consulta",
+                Subject = "Confirmação de agendamento de consulta",
                 Body = CommunicationEmail.AppointmentConfirmationEmail(consulta.Nome)
             };
             await _emailSender.SendEmailAsync(mailRequest);
@@ -94,6 +94,13 @@ namespace Application.Services.Classes
         public async Task Delete(int id)
         {
             var consulta = await _consultaRepository.GetById(id);
+            MailRequest mailRequest = new MailRequest
+            {
+                ToEmail = consulta.EmailParaReceberNotificacoes,
+                Subject = "Confirmação de cancelamento de consulta",
+                Body = CommunicationEmail.AppointmentCanceled(consulta.Nome)
+            };
+            await _emailSender.SendEmailAsync(mailRequest);
             await _consultaRepository.Delete(_mapper.Map<Consulta>(consulta));
         }
 

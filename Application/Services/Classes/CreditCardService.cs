@@ -7,16 +7,19 @@ using MercadoPago.Resource.Payment;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using MercadoPago.Error;
+using Application.Helpers;
 
 namespace Application.Services.Classes
 {
     public class CreditCardService : ICreditCardService
     {
         private IConfiguration _configuration;
+        private readonly IEmailService _emailSender;
 
-        public CreditCardService(IConfiguration configuration)
+        public CreditCardService(IConfiguration configuration, IEmailService emailSender)
         {
             _configuration = configuration;
+            _emailSender = emailSender;
         }
 
         public async Task<Payment> CobrarComCartaoDeCredito(CreditCardPayment request)
@@ -85,6 +88,13 @@ namespace Application.Services.Classes
 
             var client = new PaymentClient();
             Payment payment = await client.CreateAsync(paymentRequest, requestOptions);
+            MailRequest mailRequest = new MailRequest
+            {
+                ToEmail = paymentPayerRequest.Email,
+                Subject = "Recebemos o seu pagamento!",
+                Body = CommunicationEmail.PaymentReceived()
+            };
+            await _emailSender.SendEmailAsync(mailRequest);
             return payment;
         }
     }

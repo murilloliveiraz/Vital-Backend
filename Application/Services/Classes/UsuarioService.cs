@@ -71,7 +71,7 @@ namespace Application.Services.Classes
         public async Task<UsuarioLoginResponseContract> Login(UsuarioLoginRequestContract model)
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
-            if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
+            if (user != null && user.DataInativacao != null && await _userManager.CheckPasswordAsync(user, model.Password))
             {
                 return new UsuarioLoginResponseContract
                 {

@@ -5,16 +5,19 @@ using MercadoPago.Client.Payment;
 using MercadoPago.Client;
 using MercadoPago.Resource.Payment;
 using Microsoft.Extensions.Configuration;
+using Application.Helpers;
 
 namespace Application.Services.Classes
 {
     public class PixService : IPixService
     {
         private IConfiguration _configuration;
+        private readonly IEmailService _emailSender;
 
-        public PixService(IConfiguration configuration)
+        public PixService(IConfiguration configuration, IEmailService emailSender)
         {
             _configuration = configuration;
+            _emailSender = emailSender;
         }
 
         public async Task<Payment> CobrarComPix(PixPayment paymentRequest)
@@ -43,7 +46,13 @@ namespace Application.Services.Classes
 
             var client = new PaymentClient();
             Payment payment = await client.CreateAsync(request, requestOptions);
-            Console.WriteLine(payment);
+            MailRequest mailRequest = new MailRequest
+            {
+                ToEmail = paymentRequest.EmailPagador,
+                Subject = "Recebemos o seu pagamento!",
+                Body = CommunicationEmail.PaymentReceived()
+            };
+            await _emailSender.SendEmailAsync(mailRequest);
             return payment;
         }
     }
