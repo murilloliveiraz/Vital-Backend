@@ -20,7 +20,7 @@ namespace VitalAPI.Controllers
         }
 
         [HttpPost("{id}/anexar-arquivo")]
-        [Authorize(Policy = "AdminOnly")]
+        [Authorize]
         public async Task<IActionResult> AttachResult(int id, IFormFile file)
         {
             if (!ModelState.IsValid)
