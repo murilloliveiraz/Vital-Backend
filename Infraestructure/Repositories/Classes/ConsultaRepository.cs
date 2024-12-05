@@ -106,7 +106,7 @@ namespace Infraestructure.Repositories.Classes
 
         public async Task<Consulta> UpdatePaymentStatus(int id)
         {
-            Consulta consultaAtDatabase = await GetById(id);
+            Consulta consultaAtDatabase = await _context.Consultas.FirstOrDefaultAsync(e => e.Id == id);
 
             consultaAtDatabase.StatusPagamento = "Concluido";
 

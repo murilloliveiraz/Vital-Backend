@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using MercadoPago.Config;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -134,7 +135,6 @@ static void ConfigurarServices(WebApplicationBuilder builder)
     }).AddNewtonsoftJson();
 
     AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-
 
     builder.Services.AddSwaggerGen(c =>
     {

@@ -7,6 +7,7 @@ using Google.Apis.Calendar.v3.Data;
 using Google.Apis.Services;
 using Google.Apis.Util.Store;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 using System.Text;
@@ -74,7 +75,7 @@ namespace Application.Services.Classes
                     new EventAttendee { Email = pacienteEmail },
                     new EventAttendee { Email = medicoEmail },
                 },
-                Description = "Consulta médica com profissional da saúde da VITAL. Este evento está agendado para garantir o atendimento pontual e de qualidade que você merece. Por favor, verifique os detalhes e esteja preparado para fornecer informações relevantes para o seu acompanhamento médico. Em caso de imprevistos, entre em contato com antecedência para remarcar ou cancelar o compromisso. A VITAL está comprometida com o seu bem-estar e saúde!",
+                Description = "Consulta na VITAL. Este evento está agendado para garantir o atendimento pontual e de qualidade que você merece. Por favor, verifique os detalhes e esteja preparado para fornecer informações relevantes para o seu acompanhamento médico. Em caso de imprevistos, entre em contato com antecedência para remarcar ou cancelar o compromisso. A VITAL está comprometida com o seu bem-estar e saúde!",
                 ConferenceData = new ConferenceData()
                 {
                     CreateRequest = new CreateConferenceRequest()

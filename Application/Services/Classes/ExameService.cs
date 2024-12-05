@@ -31,7 +31,7 @@ namespace Application.Services.Classes
         public async Task<AdicionarResultadoResponseContract> AttachResult(AdicionarResultadoRequestContract model)
         {
             var exame = await _exameRepository.GetById(model.ExameId);
-            var bucketname = _configuration["S3Storage:Bucket-Name"];
+            var bucketname = _configuration["S3Storage:BucketName"];
             var resultUpload = await _s3StorageService.UploadFileAsync(model.File, exame.PrefixoDaPasta, bucketname);
             if (resultUpload.Success)
             {
@@ -99,7 +99,7 @@ namespace Application.Services.Classes
         {
             var exames = await _exameRepository.GetAllPatientExamsCompleted(id);
             var examesResponse = exames.Select(e => _mapper.Map<ExameConcluidoResponse>(e)).ToList();
-            var bucketname = _configuration["S3Storage:Bucket-Name"];
+            var bucketname = _configuration["S3Storage:BucketName"];
             var tasks = examesResponse.Select(async e =>
             {
                 var file = await _s3StorageService.GetFileByKeyAsync(e.S3KeyPath, bucketname);

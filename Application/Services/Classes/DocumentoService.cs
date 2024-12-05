@@ -42,7 +42,7 @@ namespace Application.Services.Classes
                 throw new Exception("Consulta not found.");
             }
 
-            var bucketName = _configuration["S3Storage:Bucket-Name"];
+            var bucketName = _configuration["S3Storage:BucketName"];
             
             var resultUpload = await _s3StorageService.UploadFileAsync(model.File, consulta.PrefixoDaPasta, bucketName);
             

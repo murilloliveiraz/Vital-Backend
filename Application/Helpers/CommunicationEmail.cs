@@ -7,7 +7,7 @@
             return $@"
                 <div style=""width: 100%; background-color: #ffffff; text-align: center; margin: 0 auto; font-family: sans-serif;"">
                 <div style=""margin-bottom: 20px;"">
-                  <img src=""https://raw.githubusercontent.com/murilloliveiraz/Vital-Frontend/0c3a550b90ba267c5648eff9f2ab64bd7653b006/src/assets/images/logoPrincipalCor2.svg"" 
+                  <img src=""https://github.com/murilloliveiraz/Vital-Frontend/blob/main/src/assets/images/logoPrincipalCor2.svg"" 
                        style=""width: 120px;"" 
                        alt=""Logo Vital"">
                 </div>
@@ -47,7 +47,7 @@
             return $@"
                 <div style=""width: 100%; background-color: #ffffff; text-align: center; margin: 0 auto; font-family: sans-serif;"">
                 <div style=""margin-bottom: 20px;"">
-                  <img src=""https://raw.githubusercontent.com/murilloliveiraz/Vital-Frontend/0c3a550b90ba267c5648eff9f2ab64bd7653b006/src/assets/images/logoPrincipalCor2.svg"" 
+                  <img src=""https://github.com/murilloliveiraz/Vital-Frontend/blob/main/src/assets/images/logoPrincipalCor2.svg"" 
                        style=""width: 120px;"" 
                        alt=""Logo Vital"">
                 </div>
@@ -84,7 +84,7 @@
         {
             return $@"
                 <div style=""width: 100%; background-color: #ffffff; text-align: center; margin: 0 auto; font-family: sans-serif;"">
-                <img src=""https://raw.githubusercontent.com/murilloliveiraz/Vital-Frontend/0c3a550b90ba267c5648eff9f2ab64bd7653b006/src/assets/images/logoPrincipalCor2.svg"" 
+                <img src=""https://github.com/murilloliveiraz/Vital-Frontend/blob/main/src/assets/images/logoPrincipalCor2.svg"" 
                      style=""width: 120px;"" 
                      alt=""Logo Vital"">
 
@@ -121,7 +121,7 @@
         {
             return $@"
                 <div style=""width: 100%; background-color: #ffffff; text-align: center; margin: 0 auto; font-family: sans-serif;"">
-                <img src=""https://raw.githubusercontent.com/murilloliveiraz/Vital-Frontend/0c3a550b90ba267c5648eff9f2ab64bd7653b006/src/assets/images/logoPrincipalCor2.svg"" 
+                <img src=""https://github.com/murilloliveiraz/Vital-Frontend/blob/main/src/assets/images/logoPrincipalCor2.svg"" 
                         style=""width: 120px;"" 
                         alt=""Logo Vital"">
 
@@ -158,7 +158,7 @@
         {
             return $@"
                <div style=""width: 100%; background-color: #ffffff; text-align: center; margin: 0 auto; font-family: sans-serif;"">
-                <img src=""https://raw.githubusercontent.com/murilloliveiraz/Vital-Frontend/0c3a550b90ba267c5648eff9f2ab64bd7653b006/src/assets/images/logoPrincipalCor2.svg"" 
+                <img src=""https://github.com/murilloliveiraz/Vital-Frontend/blob/main/src/assets/images/logoPrincipalCor2.svg"" 
                      style=""width: 120px;"" 
                      alt=""Logo Vital"">
 

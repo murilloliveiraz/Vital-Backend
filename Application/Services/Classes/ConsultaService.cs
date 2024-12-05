@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Google.Apis.Calendar.v3.Data;
 using Infraestructure.Services.Interfaces;
 using Infraestructure.Repositories.Classes;
+using Application.DTOS.Exame;
 
 namespace Application.Services.Classes
 {
@@ -125,15 +126,17 @@ namespace Application.Services.Classes
         public async Task<IEnumerable<AgendarConsultaResponseContract>?> GetAllDoctorAppointmentsScheduled(int id)
         {
             var consultas = await _consultaRepository.GetAllDoctorAppointmentsScheduled(id);
+
             var responses = new List<AgendarConsultaResponseContract>();
-            foreach (var exame in consultas.Take(10))
+
+            foreach (var consulta in consultas.Take(10))
             {
-                var paciente = await _pacienteService.GetById(exame.PacienteId);
-                var response = _mapper.Map<AgendarConsultaResponseContract>(exame);
+                var paciente = await _pacienteService.GetById(consulta.PacienteId);
+                var response = _mapper.Map<AgendarConsultaResponseContract>(consulta);
                 response.PacienteNome = paciente?.Nome;
-                response.PacienteCPF = paciente?.CPF;
                 responses.Add(response);
             }
+
             return responses;
         }
 
@@ -141,7 +144,7 @@ namespace Application.Services.Classes
         {
             var consultas = await _consultaRepository.GetAllPatientAppointmentsCompleted(id);
             var consultasResponse = consultas.Select(e => _mapper.Map<ConsultaConcluidaResponse>(e)).ToList();
-            var bucketname = _configuration["S3Storage:Bucket-Name"];
+            var bucketname = _configuration["S3Storage:BucketName"];
 
             var tasks = consultasResponse.SelectMany(consulta =>
                 consulta.Documentos.Select(async documento =>
